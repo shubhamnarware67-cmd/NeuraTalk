@@ -1,0 +1,113 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>BlueChat — Modern Chat UI</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <div class="page-bg">
+    <div class="card">
+      <!-- Sidebar / Contact list -->
+      <aside class="sidebar" id="sidebar">
+        <header class="side-top">
+          <div class="user">
+            <img class="avatar" src="https://i.pravatar.cc/48?img=12" alt="me" />
+            <div class="me">
+              <div class="name">Shubham</div>
+              <div class="status">Online</div>
+            </div>
+          </div>
+          <button class="new-btn" title="New chat">＋</button>
+        </header>
+
+        <div class="search-wrap">
+          <input id="search" placeholder="Search chats..." />
+        </div>
+
+        <ul class="contacts" id="contacts">
+          <li class="contact active" data-name="Kathy Gomez">
+            <img src="https://i.pravatar.cc/44?img=3" alt="" />
+            <div class="meta">
+              <div class="cname">Kathy Gomez</div>
+              <div class="cmsg">Typing... 💬</div>
+            </div>
+            <div class="time">4:09 pm</div>
+          </li>
+          <li class="contact" data-name="Sara Sanders">
+            <img src="https://i.pravatar.cc/44?img=5" alt="" />
+            <div class="meta">
+              <div class="cname">Sara Sanders</div>
+              <div class="cmsg">Can you buy me dinner?</div>
+            </div>
+            <div class="time">12:35</div>
+          </li>
+          <li class="contact" data-name="David Smith">
+            <img src="https://i.pravatar.cc/44?img=8" alt="" />
+            <div class="meta">
+              <div class="cname">David Smith</div>
+              <div class="cmsg">Let's catch up</div>
+            </div>
+            <div class="time">Yesterday</div>
+          </li>
+        </ul>
+
+        <footer class="side-bottom">
+          <small>BlueChat • Demo</small>
+        </footer>
+      </aside>
+
+      <!-- Chat area -->
+      <main class="chat" id="chat">
+        <div class="chat-header">
+          <button class="back-btn" id="openSidebar" title="Open">☰</button>
+          <div class="chat-profile">
+            <img id="chatAvatar" src="https://i.pravatar.cc/40?img=3" alt="profile" />
+            <div>
+              <div id="chatName">Kathy Gomez</div>
+              <div id="chatSub" class="typing">Typing...</div>
+            </div>
+          </div>
+          <div class="header-actions">
+            <button title="Call">📞</button>
+            <button title="More">⋯</button>
+          </div>
+        </div>
+
+        <div class="messages" id="messages">
+          <div class="day">Today</div>
+
+          <div class="msg received">
+            <div class="bubble">Hey, Bruce! It's been awhile</div>
+            <div class="ts">4:09 pm</div>
+          </div>
+
+          <div class="msg received">
+            <div class="bubble">What's up?</div>
+            <div class="ts">4:09 pm</div>
+          </div>
+
+          <div class="msg sent">
+            <div class="bubble">Hello, How are you?</div>
+            <div class="ts">4:09 pm</div>
+          </div>
+
+          <div class="msg received">
+            <div class="bubble">Sounds like a good idea!</div>
+            <div class="ts">4:10 pm</div>
+          </div>
+        </div>
+
+        <div class="composer">
+          <button class="plus" title="Attach">＋</button>
+          <input id="input" placeholder="Type a message" autocomplete="off" />
+          <button id="send">➤</button>
+        </div>
+      </main>
+    </div>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>
