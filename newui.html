@@ -1,0 +1,372 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Premium Chat UI</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+
+<style>
+
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    font-family:'Poppins',sans-serif;
+}
+
+body{
+    height:100vh;
+    background:linear-gradient(135deg,#a18cd1,#fbc2eb);
+    display:flex;
+    justify-content:center;
+    align-items:center;
+}
+
+.app{
+    width:95%;
+    height:95vh;
+    backdrop-filter: blur(20px);
+    background:rgba(255,255,255,0.2);
+    border-radius:25px;
+    display:flex;
+    overflow:hidden;
+    box-shadow:0 20px 60px rgba(0,0,0,0.2);
+}
+
+/* Sidebar */
+
+.sidebar{
+    width:90px;
+    background:rgba(0,0,0,0.5);
+    backdrop-filter: blur(10px);
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    padding:20px 0;
+    gap:25px;
+}
+
+.sidebar button{
+    background:rgba(255,255,255,0.2);
+    border:none;
+    width:50px;
+    height:50px;
+    border-radius:15px;
+    cursor:pointer;
+    font-size:18px;
+    color:white;
+    transition:0.3s;
+}
+
+.sidebar button:hover{
+    transform:scale(1.1);
+    background:#6c63ff;
+}
+
+/* Chat List */
+
+.chat-list{
+    width:300px;
+    background:rgba(255,255,255,0.3);
+    backdrop-filter: blur(20px);
+    padding:20px;
+    overflow-y:auto;
+}
+
+.search{
+    width:100%;
+    padding:10px;
+    border:none;
+    border-radius:12px;
+    margin-bottom:20px;
+    outline:none;
+}
+
+.chat-item{
+    display:flex;
+    align-items:center;
+    gap:10px;
+    padding:10px;
+    border-radius:15px;
+    cursor:pointer;
+    margin-bottom:10px;
+    transition:0.3s;
+}
+
+.chat-item.active{
+    background:#6c63ff;
+    color:white;
+}
+
+.chat-item:hover{
+    background:rgba(255,255,255,0.5);
+}
+
+.avatar{
+    width:40px;
+    height:40px;
+    border-radius:50%;
+    position:relative;
+}
+
+.online{
+    width:10px;
+    height:10px;
+    background:lime;
+    border-radius:50%;
+    position:absolute;
+    bottom:0;
+    right:0;
+    border:2px solid white;
+}
+
+/* Chat Area */
+
+.chat-area{
+    flex:1;
+    display:flex;
+    flex-direction:column;
+}
+
+.header{
+    padding:15px;
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    background:rgba(255,255,255,0.3);
+}
+
+.messages{
+    flex:1;
+    padding:20px;
+    overflow-y:auto;
+    display:flex;
+    flex-direction:column;
+    gap:10px;
+}
+
+.message{
+    max-width:60%;
+    padding:10px 15px;
+    border-radius:20px;
+    position:relative;
+    animation:fadeIn 0.3s ease-in-out;
+}
+
+.sent{
+    align-self:flex-end;
+    background:#6c63ff;
+    color:white;
+}
+
+.received{
+    align-self:flex-start;
+    background:white;
+}
+
+.timestamp{
+    font-size:10px;
+    margin-top:5px;
+    opacity:0.6;
+}
+
+.reactions{
+    margin-top:5px;
+    font-size:12px;
+    display:flex;
+    gap:5px;
+}
+
+/* Input */
+
+.input-area{
+    padding:15px;
+    display:flex;
+    gap:10px;
+    background:rgba(255,255,255,0.3);
+}
+
+.input-area input{
+    flex:1;
+    padding:10px;
+    border:none;
+    border-radius:20px;
+    outline:none;
+}
+
+.input-area button{
+    padding:10px 15px;
+    border:none;
+    border-radius:20px;
+    background:#6c63ff;
+    color:white;
+    cursor:pointer;
+    transition:0.3s;
+}
+
+.input-area button:hover{
+    transform:scale(1.1);
+}
+
+@keyframes fadeIn{
+    from{opacity:0; transform:translateY(10px);}
+    to{opacity:1; transform:translateY(0);}
+}
+
+.dark{
+    background:linear-gradient(135deg,#1e1e2f,#2b2b40);
+}
+
+.dark .chat-list,
+.dark .header,
+.dark .input-area{
+    background:rgba(0,0,0,0.4);
+}
+
+.dark .received{
+    background:#444;
+    color:white;
+}
+
+</style>
+</head>
+
+<body>
+
+<div class="app">
+
+<div class="sidebar">
+<button onclick="toggleTheme()">🌙</button>
+<button onclick="alert('Profile Settings')">⚙️</button>
+</div>
+
+<div class="chat-list">
+<input type="text" class="search" placeholder="Search..." onkeyup="searchChat(this.value)">
+<div id="users"></div>
+</div>
+
+<div class="chat-area">
+<div class="header">
+<h3 id="chatTitle">Design Chat</h3>
+<span>23 Members</span>
+</div>
+
+<div class="messages" id="messages"></div>
+
+<div class="input-area">
+<input type="text" id="messageInput" placeholder="Type message...">
+<input type="file" id="imageInput" hidden>
+<button onclick="document.getElementById('imageInput').click()">📎</button>
+<button onclick="sendMessage()">Send</button>
+</div>
+
+</div>
+
+</div>
+
+<script>
+
+let currentChat = "Design Chat";
+
+let chats = {
+    "Design Chat": [],
+    "Development": [],
+    "Marketing": []
+};
+
+const usersDiv = document.getElementById("users");
+
+function renderUsers(){
+    usersDiv.innerHTML="";
+    for(let chat in chats){
+        usersDiv.innerHTML+=`
+        <div class="chat-item ${chat===currentChat?'active':''}" onclick="switchChat('${chat}')">
+            <div class="avatar">
+                <img src="https://i.pravatar.cc/40?u=${chat}" class="avatar">
+                <div class="online"></div>
+            </div>
+            ${chat}
+        </div>`;
+    }
+}
+
+function switchChat(chat){
+    currentChat = chat;
+    renderUsers();
+    renderMessages();
+}
+
+function renderMessages(){
+    const container = document.getElementById("messages");
+    container.innerHTML="";
+    chats[currentChat].forEach(msg=>{
+        container.innerHTML+=msg;
+    });
+    container.scrollTop = container.scrollHeight;
+}
+
+function sendMessage(){
+    const input = document.getElementById("messageInput");
+    if(input.value.trim()==="") return;
+
+    let messageHTML = `
+    <div class="message sent">
+        ${input.value}
+        <div class="timestamp">${new Date().toLocaleTimeString()}</div>
+        <div class="reactions">
+            <span onclick="react(this)">❤️</span>
+            <span onclick="react(this)">👍</span>
+            <span onclick="react(this)">😂</span>
+        </div>
+    </div>`;
+
+    chats[currentChat].push(messageHTML);
+    localStorage.setItem("chatData",JSON.stringify(chats));
+    input.value="";
+    renderMessages();
+}
+
+function react(el){
+    el.style.transform="scale(1.5)";
+}
+
+function searchChat(value){
+    document.querySelectorAll(".chat-item").forEach(item=>{
+        item.style.display = item.innerText.toLowerCase().includes(value.toLowerCase())
+        ? "flex":"none";
+    });
+}
+
+function toggleTheme(){
+    document.body.classList.toggle("dark");
+}
+
+document.getElementById("imageInput").addEventListener("change",function(e){
+    const file = e.target.files[0];
+    if(!file) return;
+    const reader = new FileReader();
+    reader.onload=function(){
+        let imgHTML = `
+        <div class="message sent">
+            <img src="${reader.result}" style="max-width:150px;border-radius:10px;">
+            <div class="timestamp">${new Date().toLocaleTimeString()}</div>
+        </div>`;
+        chats[currentChat].push(imgHTML);
+        renderMessages();
+    }
+    reader.readAsDataURL(file);
+});
+
+if(localStorage.getItem("chatData")){
+    chats = JSON.parse(localStorage.getItem("chatData"));
+}
+
+renderUsers();
+renderMessages();
+
+</script>
+
+</body>
+</html>git
