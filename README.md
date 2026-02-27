@@ -45,7 +45,7 @@ You can run **NeuraTalk** locally or host it on **GitHub Pages**.
 ### ▶️ Run Locally
 1. Clone the repository  
    ```bash
-   git clone https://github.com/<your-username>/NeuraTalk.git
+   git clone https://github.com/shubhamnarware67-cmd/NeuraTalk.git
    
 2. Open index.html in your browser.
     That’s it! 🎉
