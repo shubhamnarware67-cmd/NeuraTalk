@@ -1,0 +1,296 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Modern Task UI</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+
+<style>
+
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    font-family:'Inter',sans-serif;
+}
+
+body{
+    background:linear-gradient(135deg,#cfd9ff,#e2e2f2);
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    gap:40px;
+    padding:40px;
+    min-height:100vh;
+}
+
+/* Mobile Frame */
+.phone{
+    width:320px;
+    height:640px;
+    background:#f2f3f7;
+    border-radius:35px;
+    padding:22px;
+    box-shadow:
+        15px 15px 30px rgba(0,0,0,0.1),
+        -10px -10px 30px rgba(255,255,255,0.8);
+    overflow-y:auto;
+    position:relative;
+}
+
+/* Header */
+.top{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    margin-bottom:20px;
+}
+
+.top h2{
+    font-size:18px;
+    font-weight:600;
+    color:#444;
+}
+
+.icon{
+    width:35px;
+    height:35px;
+    background:#ffffff;
+    border-radius:12px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    box-shadow:5px 5px 10px rgba(0,0,0,0.05);
+    cursor:pointer;
+}
+
+/* Main Gradient Card */
+.main-card{
+    background:linear-gradient(135deg,#7b5cff,#5f3df6);
+    color:#fff;
+    padding:18px;
+    border-radius:22px;
+    margin-bottom:20px;
+    box-shadow:0 15px 25px rgba(95,61,246,0.4);
+    transition:0.3s;
+}
+
+.main-card:hover{
+    transform:translateY(-5px);
+}
+
+.main-card h3{
+    font-size:14px;
+    font-weight:500;
+}
+
+.main-card p{
+    font-size:12px;
+    margin:8px 0;
+    opacity:0.9;
+}
+
+/* Progress Bar */
+.progress{
+    height:6px;
+    background:rgba(255,255,255,0.3);
+    border-radius:10px;
+    overflow:hidden;
+}
+
+.progress span{
+    display:block;
+    width:75%;
+    height:100%;
+    background:#fff;
+    border-radius:10px;
+}
+
+/* Section Title */
+.section-title{
+    font-size:14px;
+    font-weight:600;
+    color:#666;
+    margin-bottom:12px;
+}
+
+/* Small Cards */
+.task{
+    background:#fff;
+    padding:14px;
+    border-radius:18px;
+    margin-bottom:15px;
+    box-shadow:6px 6px 15px rgba(0,0,0,0.05);
+    transition:0.3s;
+}
+
+.task:hover{
+    transform:translateY(-3px);
+}
+
+.task h4{
+    font-size:13px;
+    color:#333;
+}
+
+.task span{
+    font-size:11px;
+    color:#888;
+}
+
+/* Floating Button */
+.fab{
+    position:absolute;
+    bottom:25px;
+    right:25px;
+    width:55px;
+    height:55px;
+    border-radius:18px;
+    border:none;
+    font-size:24px;
+    color:#fff;
+    background:linear-gradient(135deg,#ff6ec7,#7b5cff);
+    box-shadow:0 10px 20px rgba(123,92,255,0.4);
+    cursor:pointer;
+    transition:0.3s;
+}
+
+.fab:hover{
+    transform:scale(1.1);
+}
+
+/* Form Page */
+.form input, .form textarea{
+    width:100%;
+    border:none;
+    padding:12px;
+    border-radius:14px;
+    background:#eef0f6;
+    margin-bottom:15px;
+    outline:none;
+}
+
+.form button{
+    width:100%;
+    padding:14px;
+    border:none;
+    border-radius:14px;
+    background:linear-gradient(135deg,#7b5cff,#5f3df6);
+    color:#fff;
+    font-weight:600;
+    cursor:pointer;
+}
+
+.form button:hover{
+    opacity:0.9;
+}
+
+</style>
+</head>
+<body>
+
+<!-- Screen 1 -->
+<div class="phone">
+
+    <div class="top">
+        <h2>Hello, Amy 👋</h2>
+        <div class="icon">🔍</div>
+    </div>
+
+    <div class="main-card">
+        <h3>Task Master Company</h3>
+        <p>Lorem ipsum dolor sit amet</p>
+        <div class="progress"><span></span></div>
+    </div>
+
+    <div class="section-title">Upcoming Tasks</div>
+
+    <div id="taskContainer">
+        <div class="task">
+            <h4>Sunday, 5 December 2021</h4>
+            <span>1 day remaining</span>
+        </div>
+
+        <div class="task">
+            <h4>UI Design Review</h4>
+            <span>3 days remaining</span>
+        </div>
+    </div>
+
+    <button class="fab" onclick="scrollToForm()">+</button>
+</div>
+
+
+<!-- Screen 2 -->
+<div class="phone">
+
+    <div class="top">
+        <h2>My Tasks</h2>
+        <div class="icon">📅</div>
+    </div>
+
+    <div class="main-card">
+        <h3>Mobile App Design</h3>
+        <p>Complete Dashboard UI</p>
+        <div class="progress"><span style="width:65%"></span></div>
+    </div>
+
+    <div class="task">
+        <h4>Fix Navbar Bug</h4>
+        <span>08:00 AM</span>
+    </div>
+
+    <div class="task">
+        <h4>Client Meeting</h4>
+        <span>12:00 PM</span>
+    </div>
+</div>
+
+
+<!-- Screen 3 -->
+<div class="phone form" id="formPage">
+
+    <div class="top">
+        <h2>Create New Task</h2>
+    </div>
+
+    <input type="text" id="title" placeholder="Write title here">
+    <textarea rows="4" id="desc" placeholder="Write description"></textarea>
+
+    <button onclick="addTask()">Create Task</button>
+</div>
+
+
+<script>
+
+function addTask(){
+    let title = document.getElementById("title").value;
+    let desc = document.getElementById("desc").value;
+
+    if(title === ""){
+        alert("Please enter title!");
+        return;
+    }
+
+    let div = document.createElement("div");
+    div.className = "task";
+    div.innerHTML = `<h4>${title}</h4><span>${desc}</span>`;
+
+    document.getElementById("taskContainer").appendChild(div);
+
+    document.getElementById("title").value="";
+    document.getElementById("desc").value="";
+
+    alert("Task Added Successfully ✅");
+}
+
+function scrollToForm(){
+    document.getElementById("formPage").scrollIntoView({behavior:"smooth"});
+}
+
+</script>
+
+</body>
+</html>
