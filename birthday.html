@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>🎉 Birthday Card 🎂</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: "Poppins", sans-serif;
+    }
+
+    body {
+      height: 100vh;
+      background: linear-gradient(135deg, #ff9a9e, #fad0c4);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      overflow: hidden;
+    }
+
+    .card {
+      width: 350px;
+      height: 450px;
+      background: white;
+      border-radius: 20px;
+      box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+      transition: transform 0.4s ease;
+    }
+
+    .card:hover {
+      transform: scale(1.05);
+    }
+
+    .glow {
+      position: absolute;
+      top: -2px;
+      left: -2px;
+      right: -2px;
+      bottom: -2px;
+      background: linear-gradient(45deg, #ff00cc, #3333ff, #ffff00, #00ffcc);
+      border-radius: 22px;
+      z-index: -1;
+      background-size: 400%;
+      animation: glowMove 8s linear infinite;
+      filter: blur(8px);
+    }
+
+    @keyframes glowMove {
+      0% {background-position: 0% 50%;}
+      50% {background-position: 100% 50%;}
+      100% {background-position: 0% 50%;}
+    }
+
+    .card img {
+      width: 100%;
+      height: 200px;
+      object-fit: cover;
+      border-top-left-radius: 20px;
+      border-top-right-radius: 20px;
+    }
+
+    .card h2 {
+      margin-top: 20px;
+      font-size: 28px;
+      color: #ff4081;
+    }
+
+    .card p {
+      font-size: 16px;
+      color: #555;
+      margin: 15px 20px;
+    }
+
+    .btn {
+      background: #ff4081;
+      color: white;
+      padding: 10px 20px;
+      border: none;
+      border-radius: 30px;
+      cursor: pointer;
+      transition: 0.3s;
+    }
+
+    .btn:hover {
+      background: #e91e63;
+      transform: scale(1.1);
+    }
+
+    .hidden-message {
+      display: none;
+      margin-top: 15px;
+      color: #673ab7;
+      font-weight: bold;
+      font-size: 18px;
+      animation: fadeIn 1s ease;
+    }
+
+    @keyframes fadeIn {
+      from {opacity: 0; transform: translateY(20px);}
+      to {opacity: 1; transform: translateY(0);}
+    }
+
+    /* Confetti */
+    .confetti {
+      position: absolute;
+      width: 10px;
+      height: 10px;
+      background: red;
+      top: 0;
+      animation: fall 3s linear infinite;
+    }
+
+    @keyframes fall {
+      0% {transform: translateY(0);}
+      100% {transform: translateY(100vh);}
+    }
+  </style>
+</head>
+<body>
+
+  <div class="card">
+    <div class="glow"></div>
+    <img src="/demo/image.png" alt="Birthday Cake">
+    <h2>Happy Birthday 🎉</h2>
+    <p>Wishing you a day filled with love, laughter, and endless happiness!</p>
+    <button class="btn" onclick="openCard()">Open Card 💌</button>
+    <div id="message" class="hidden-message">🎂 You’re amazing! Have a magical birthday! 💖</div>
+  </div>
+
+  <script>
+    function openCard() {
+      document.getElementById('message').style.display = 'block';
+      createConfetti();
+    }
+
+    function createConfetti() {
+      for (let i = 0; i < 100; i++) {
+        const confetti = document.createElement('div');
+        confetti.classList.add('confetti');
+        confetti.style.left = Math.random() * window.innerWidth + 'px';
+        confetti.style.backgroundColor = randomColor();
+        confetti.style.animationDuration = (Math.random() * 3 + 2) + 's';
+        document.body.appendChild(confetti);
+
+        setTimeout(() => confetti.remove(), 5000);
+      }
+    }
+
+    function randomColor() {
+      const colors = ['#ff4081', '#ffeb3b', '#4caf50', '#2196f3', '#9c27b0', '#ff9800'];
+      return colors[Math.floor(Math.random() * colors.length)];
+    }
+  </script>
+
+</body>
+</html>
