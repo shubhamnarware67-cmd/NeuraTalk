@@ -1,0 +1,313 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Happy Holi — Shubham Narware</title>
+    <link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@600;800&family=Pacifico&display=swap"
+        rel="stylesheet">
+    <style>
+        :root {
+            --pink: #ff4d6d;
+            --orange: #ffb74d;
+            --yellow: #ffe66d;
+            --green: #8ed081;
+            --blue: #6ec6ff;
+            --purple: #b39ddb;
+            --bg-gradient: linear-gradient(135deg, #ffeef8 0%, #fff7e6 40%, #e8f8ff 100%);
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Baloo 2', cursive;
+            background: var(--bg-gradient);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+            overflow: hidden;
+        }
+
+        .poster {
+            position: relative;
+            width: 92%;
+            max-width: 950px;
+            height: 720px;
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 30px;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.15);
+            overflow: hidden;
+            text-align: center;
+        }
+
+        .poster::before {
+            content: '';
+            position: absolute;
+            inset: -5px;
+            background: linear-gradient(45deg, var(--pink), var(--orange), var(--yellow), var(--green), var(--blue), var(--purple));
+            background-size: 600% 600%;
+            z-index: -1;
+            border-radius: 35px;
+            animation: borderFlow 10s ease infinite;
+        }
+
+        @keyframes borderFlow {
+            0% {
+                background-position: 0% 50%;
+            }
+
+            50% {
+                background-position: 100% 50%;
+            }
+
+            100% {
+                background-position: 0% 50%;
+            }
+        }
+
+        header h1 {
+            font-family: 'Pacifico', cursive;
+            font-size: 85px;
+            margin-top: 40px;
+            background: linear-gradient(90deg, var(--pink), var(--yellow), var(--green), var(--blue));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            text-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        }
+
+        header p {
+            font-size: 22px;
+            color: #444;
+            margin-top: 8px;
+        }
+
+        .paint-splash {
+            position: absolute;
+            border-radius: 50%;
+            opacity: 0.7;
+            filter: blur(10px);
+            animation: float 6s ease-in-out infinite alternate;
+        }
+
+        .splash1 {
+            background: var(--pink);
+            width: 240px;
+            height: 240px;
+            top: 40px;
+            left: -50px;
+            animation-delay: 0.5s;
+        }
+
+        .splash2 {
+            background: var(--blue);
+            width: 280px;
+            height: 280px;
+            top: -70px;
+            right: -60px;
+            animation-delay: 1s;
+        }
+
+        .splash3 {
+            background: var(--green);
+            width: 220px;
+            height: 220px;
+            bottom: 0;
+            left: 40px;
+            animation-delay: 1.5s;
+        }
+
+        .splash4 {
+            background: var(--orange);
+            width: 280px;
+            height: 280px;
+            bottom: -80px;
+            right: 30px;
+            animation-delay: 2s;
+        }
+
+        @keyframes float {
+            0% {
+                transform: translateY(0) rotate(0);
+            }
+
+            100% {
+                transform: translateY(-30px) rotate(10deg);
+            }
+        }
+
+        .wish {
+            margin: 60px auto 30px;
+            padding: 20px 40px;
+            background: rgba(255, 255, 255, 0.8);
+            border-radius: 20px;
+            display: inline-block;
+            font-size: 21px;
+            color: #333;
+            line-height: 1.6;
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.08);
+            max-width: 700px;
+        }
+
+        .features {
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 20px;
+            margin-top: 30px;
+        }
+
+        .feature {
+            background: linear-gradient(45deg, var(--pink), var(--blue));
+            color: white;
+            padding: 12px 22px;
+            border-radius: 25px;
+            font-size: 18px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.15);
+            animation: bounce 3s infinite ease-in-out;
+        }
+
+        @keyframes bounce {
+
+            0%,
+            100% {
+                transform: translateY(0);
+            }
+
+            50% {
+                transform: translateY(-6px);
+            }
+        }
+
+        .thought {
+            margin-top: 35px;
+            font-size: 20px;
+            color: #333;
+            font-style: italic;
+            line-height: 1.8;
+            padding: 0 40px;
+        }
+
+        .holi-img {
+            width: 120px;
+            height: 120px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 4px solid white;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+            margin-top: 20px;
+        }
+
+        .footer {
+            position: absolute;
+            bottom: 20px;
+            width: 100%;
+            font-size: 18px;
+            color: #444;
+        }
+
+        .footer span {
+            font-weight: bold;
+            background: linear-gradient(45deg, var(--green), var(--blue));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .confetti {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+            top: 0;
+            left: 0;
+            pointer-events: none;
+            z-index: 10;
+        }
+
+        .confetti span {
+            position: absolute;
+            width: 8px;
+            height: 14px;
+            background: var(--pink);
+            animation: fall 5s linear infinite;
+            opacity: 0.8;
+        }
+
+        @keyframes fall {
+            0% {
+                transform: translateY(-10%) rotate(0deg);
+                opacity: 1;
+            }
+
+            100% {
+                transform: translateY(110vh) rotate(360deg);
+                opacity: 0;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="poster">
+        <div class="paint-splash splash1"></div>
+        <div class="paint-splash splash2"></div>
+        <div class="paint-splash splash3"></div>
+        <div class="paint-splash splash4"></div>
+
+        <div class="confetti" id="confetti"></div>
+
+        <header>
+            <h1>Happy Holi!</h1>
+            <p>Festival of Colors, Joy & Togetherness</p>
+        </header>
+
+        <img src="/demo/holi.png" class="holi-img"
+            alt="Holi celebration image">
+
+        <div class="wish">
+            Wishing you and your family a <strong>vibrant</strong>, <strong>colorful</strong>, and
+            <strong>joy-filled</strong> Holi! <br>
+            Let’s paint our lives with happiness and fill every moment with laughter.
+        </div>
+
+        <div class="features">
+            <div class="feature">🌈 Splash of Colors</div>
+            <div class="feature">🎉 Celebration of Love</div>
+            <div class="feature">🎶 Beats & Dhol</div>
+            <div class="feature">🍬 Sweets & Happiness</div>
+            <div class="feature">🪅 Family Fun</div>
+            <div class="feature">✨ Memories Forever</div>
+        </div>
+
+        <div class="thought">
+            “Life is more beautiful when you add colors to it — <strong>spread love, joy, and happiness</strong> like
+            colors on Holi.”
+        </div>
+
+        <div class="footer">
+            Made with ❤️ by <span>Shubham Narware</span>
+        </div>
+    </div>
+
+    <script>
+        const confetti = document.getElementById('confetti');
+        const colors = ['#ff4d6d', '#ffb74d', '#ffe66d', '#8ed081', '#6ec6ff', '#b39ddb'];
+
+        for (let i = 0; i < 80; i++) {
+            const span = document.createElement('span');
+            span.style.background = colors[Math.floor(Math.random() * colors.length)];
+            span.style.left = Math.random() * 100 + '%';
+            span.style.animationDelay = Math.random() * 5 + 's';
+            span.style.width = (6 + Math.random() * 6) + 'px';
+            span.style.height = (10 + Math.random() * 10) + 'px';
+            confetti.appendChild(span);
+        }
+    </script>
+</body>
+
+</html>
