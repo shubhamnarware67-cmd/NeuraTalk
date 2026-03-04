@@ -1,0 +1,838 @@
+<!doctype html>
+<html lang="hi">
+
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>Holi Balloon Burst — Ultimate 🎉</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;800&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --glass: rgba(255, 255, 255, 0.12);
+            --card: rgba(255, 255, 255, 0.85);
+            --accent: #ff4d6d;
+        }
+
+        * {
+            box-sizing: border-box
+        }
+
+        html,
+        body {
+            height: 100%;
+            margin: 0;
+            font-family: "Poppins", system-ui, Segoe UI, Roboto, "Noto Sans", sans-serif;
+            background: #111;
+            color: #111;
+        }
+
+        body {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: linear-gradient(120deg, #0f172a 0%, #081129 100%);
+            overflow: hidden;
+        }
+
+        /* animated background blobs */
+        .bg {
+            position: fixed;
+            inset: 0;
+            z-index: 0;
+            pointer-events: none;
+            overflow: hidden;
+        }
+
+        .blob {
+            position: absolute;
+            border-radius: 50%;
+            filter: blur(80px);
+            opacity: 0.9;
+            mix-blend-mode: screen;
+            animation: float 18s ease-in-out infinite;
+        }
+
+        .blob.b1 {
+            width: 720px;
+            height: 720px;
+            background: #ff6b6b;
+            left: -10%;
+            top: -15%;
+        }
+
+        .blob.b2 {
+            width: 520px;
+            height: 520px;
+            background: #ffd86b;
+            right: -8%;
+            top: 5%;
+        }
+
+        .blob.b3 {
+            width: 520px;
+            height: 520px;
+            background: #6bd3ff;
+            left: 8%;
+            bottom: -12%;
+        }
+
+        @keyframes float {
+            0% {
+                transform: translateY(0)
+            }
+
+            50% {
+                transform: translateY(-40px)
+            }
+
+            100% {
+                transform: translateY(0)
+            }
+        }
+
+        /* main card */
+        .wrap {
+            position: relative;
+            z-index: 3;
+            width: min(1050px, 96vw);
+            max-width: 1100px;
+            height: min(720px, 90vh);
+            border-radius: 20px;
+            padding: 18px;
+            background: linear-gradient(180deg, rgba(255, 255, 255, 0.06), rgba(255, 255, 255, 0.03));
+            box-shadow: 0 10px 40px rgba(2, 6, 23, 0.6);
+            display: grid;
+            grid-template-columns: 430px 1fr;
+            gap: 18px;
+            align-items: stretch;
+            overflow: hidden;
+        }
+
+        /* left panel controls */
+        .left {
+            padding: 18px;
+            border-radius: 12px;
+            background: linear-gradient(180deg, rgba(255, 255, 255, 0.04), rgba(255, 255, 255, 0.02));
+            display: flex;
+            flex-direction: column;
+            gap: 14px;
+            align-items: flex-start;
+            border: 1px solid rgba(255, 255, 255, 0.03);
+        }
+
+        .brand {
+            display: flex;
+            gap: 12px;
+            align-items: center;
+        }
+
+        .logo {
+            width: 56px;
+            height: 56px;
+            border-radius: 12px;
+            background: linear-gradient(135deg, #ff9a9e, #fad0c4);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 800;
+            color: #fff;
+            font-size: 20px;
+            box-shadow: 0 6px 18px rgba(0, 0, 0, 0.25);
+        }
+
+        h2 {
+            margin: 0;
+            color: #fff;
+            font-size: 1.2rem
+        }
+
+        p.sub {
+            margin: 0;
+            color: rgba(255, 255, 255, 0.7);
+            font-size: 0.95rem
+        }
+
+        .controls {
+            width: 100%;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            margin-top: 6px
+        }
+
+        label {
+            color: rgba(255, 255, 255, 0.8);
+            font-weight: 600;
+            font-size: 0.9rem
+        }
+
+        input[type="text"],
+        input[type="file"],
+        select {
+            width: 100%;
+            padding: 10px;
+            border-radius: 10px;
+            border: 1px solid rgba(255, 255, 255, 0.06);
+            background: rgba(0, 0, 0, 0.25);
+            color: #fff;
+            font-size: 0.95rem;
+        }
+
+        .smallrow {
+            display: flex;
+            gap: 8px;
+            width: 100%
+        }
+
+        .smallrow>* {
+            flex: 1
+        }
+
+        .btn {
+            padding: 10px 12px;
+            border-radius: 10px;
+            border: none;
+            color: #fff;
+            font-weight: 700;
+            background: linear-gradient(90deg, #ff6b6b, #ffd86b);
+            cursor: pointer;
+            box-shadow: 0 8px 24px rgba(255, 107, 107, 0.12);
+        }
+
+        .mutebtn {
+            padding: 8px;
+            border-radius: 10px;
+            border: 1px solid rgba(255, 255, 255, 0.06);
+            background: rgba(255, 255, 255, 0.02);
+            color: #fff;
+            cursor: pointer;
+        }
+
+        .meta {
+            display: flex;
+            gap: 8px;
+            align-items: center;
+            margin-top: auto;
+            width: 100%
+        }
+
+        .score {
+            background: linear-gradient(90deg, #ffffff10, #ffffff05);
+            padding: 8px 12px;
+            border-radius: 10px;
+            color: #fff;
+            font-weight: 700
+        }
+
+        /* right: game stage */
+        .stage {
+            position: relative;
+            background: linear-gradient(180deg, rgba(255, 255, 255, 0.02), rgba(255, 255, 255, 0.01));
+            border-radius: 12px;
+            padding: 18px;
+            overflow: hidden;
+            border: 1px solid rgba(255, 255, 255, 0.03);
+            display: flex;
+            flex-direction: column;
+        }
+
+        .stageTop {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 8px;
+            margin-bottom: 8px
+        }
+
+        .stageTitle {
+            color: #fff;
+            font-weight: 800;
+            font-size: 1.05rem
+        }
+
+        .controlsRow {
+            display: flex;
+            gap: 8px;
+            align-items: center
+        }
+
+        .arena {
+            position: relative;
+            flex: 1;
+            border-radius: 10px;
+            background: linear-gradient(180deg, rgba(255, 255, 255, 0.012), rgba(255, 255, 255, 0.01));
+            overflow: hidden;
+            display: block;
+        }
+
+        /* balloon style (each balloon is absolutely positioned) */
+        .balloon {
+            position: absolute;
+            border-radius: 50% 50% 45% 55% / 55% 55% 45% 45%;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+            box-shadow: 0 14px 30px rgba(2, 6, 23, 0.5);
+            transition: transform 0.18s ease, opacity 0.2s ease;
+            will-change: transform, opacity;
+        }
+
+        .balloon .photo {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: block
+        }
+
+        .string {
+            position: absolute;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 3px;
+            height: 110px;
+            background: linear-gradient(180deg, #ffffff33, #0000);
+            border-radius: 2px;
+            z-index: 0;
+        }
+
+        /* confetti & emojis */
+        .particle {
+            position: absolute;
+            pointer-events: none;
+            width: 10px;
+            height: 14px;
+            border-radius: 3px;
+            opacity: 0.95;
+            transform-origin: center center;
+        }
+
+        .emoji {
+            position: absolute;
+            font-size: 22px;
+            pointer-events: none;
+            filter: drop-shadow(0 6px 12px rgba(0, 0, 0, 0.35));
+        }
+
+        .finalSplash {
+            position: absolute;
+            inset: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-direction: column;
+            gap: 12px;
+            pointer-events: none;
+            opacity: 0;
+            transform: scale(0.9);
+            transition: all 0.8s cubic-bezier(.2, .9, .2, 1);
+        }
+
+        .finalSplash.show {
+            opacity: 1;
+            transform: scale(1)
+        }
+
+        .finalCard {
+            background: linear-gradient(135deg, #ffffff11, #ffffff06);
+            padding: 18px;
+            border-radius: 14px;
+            text-align: center;
+            color: #fff;
+            backdrop-filter: blur(6px);
+            box-shadow: 0 20px 60px rgba(2, 6, 23, 0.6)
+        }
+
+        .finalCard h3 {
+            margin: 0;
+            font-size: 1.8rem
+        }
+
+        .finalCard p {
+            margin: 0.4rem 0 0;
+            color: rgba(255, 255, 255, 0.9)
+        }
+
+        /* small helpers */
+        .muted {
+            opacity: 0.65;
+            font-size: 0.9rem;
+            color: #fff
+        }
+
+        .hint {
+            font-size: 0.85rem;
+            color: rgba(255, 255, 255, 0.6)
+        }
+
+        @media (max-width:980px) {
+            .wrap {
+                grid-template-columns: 1fr;
+                height: auto;
+                padding: 12px
+            }
+
+            .left {
+                order: 2
+            }
+
+            .stage {
+                order: 1;
+                height: 60vh
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="bg" aria-hidden="true">
+        <div class="blob b1"></div>
+        <div class="blob b2"></div>
+        <div class="blob b3"></div>
+    </div>
+
+    <main class="wrap" role="main" aria-label="Holi balloon burst">
+        <section class="left" aria-label="Controls">
+            <div class="brand">
+                <div class="logo">H</div>
+                <div>
+                    <h2>Holi Burst — Ultimate</h2>
+                    <p class="sub">Share a colourful surprise — click balloons to burst and celebrate!</p>
+                </div>
+            </div>
+
+            <div class="controls" aria-hidden="false">
+                <label for="nameInput">Naam (message me dikhai dega)</label>
+                <input id="nameInput" type="text" placeholder="Apna/Recipient ka naam likho (optional)">
+
+                <label style="margin-top:6px">Upload Photo (optional) — ye photo new balloons me lagega</label>
+                <input id="photoUpload" type="file" accept="image/*">
+
+                <div class="smallrow">
+                    <div>
+                        <label>Balloons</label>
+                        <select id="countSelect">
+                            <option value="5">5 balloons</option>
+                            <option value="7" selected>7 balloons</option>
+                            <option value="9">9 balloons</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label>Difficulty</label>
+                        <select id="difficulty">
+                            <option value="easy">Easy</option>
+                            <option value="normal" selected>Normal</option>
+                            <option value="hard">Hard</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div style="display:flex;gap:8px;align-items:center;margin-top:6px">
+                    <button id="startBtn" class="btn">Start Surprise</button>
+                    <button id="resetBtn" class="mutebtn">Reset</button>
+                </div>
+
+                <div style="display:flex;gap:8px;margin-top:10px;align-items:center;">
+                    <button id="musicToggle" class="mutebtn">🔊 Music On</button>
+                    <button id="shareBtn" class="btn"
+                        style="background:linear-gradient(90deg,#68e3ff,#7b6bff)">Share</button>
+                </div>
+
+                <div class="meta" style="margin-top:12px">
+                    <div class="score" id="scoreBox">Score: 0 / 0</div>
+                    <div class="hint muted" id="statusHint">Ready</div>
+                </div>
+
+                <div style="margin-top:12px" class="hint">Tip: Agar koi click nahi karta → ek balloon 8s me auto burst
+                    karega — surprise mode!</div>
+            </div>
+        </section>
+
+        <section class="stage" aria-label="Game stage">
+            <div class="stageTop">
+                <div class="stageTitle">Burst the balloons — Har burst pe Rangon ka Dhamaka! 🎉</div>
+                <div class="controlsRow">
+                    <div class="muted" id="timer">0s</div>
+                </div>
+            </div>
+
+            <div class="arena" id="arena" role="application" aria-label="Balloon arena">
+                <!-- strings area -->
+                <div class="string" id="mainString" style="top:0%;left:50%;transform:translateX(-50%);"></div>
+
+                <!-- Final celebration overlay -->
+                <div class="finalSplash" id="finalSplash" aria-hidden="true">
+                    <div class="finalCard" role="status">
+                        <h3 id="finalTitle">Happy Holi! 🌈</h3>
+                        <p id="finalText">Rangon se bhara tyohar — enjoy your day!</p>
+                        <div style="margin-top:12px;display:flex;gap:8px;justify-content:center">
+                            <button id="finalReplay" class="btn">Play Again</button>
+                            <button id="finalShare" class="btn"
+                                style="background:linear-gradient(90deg,#68e3ff,#7b6bff)">Share</button>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </section>
+    </main>
+
+    <!-- sounds (cdn pixabay free) -->
+    <audio id="popSnd" src="/demo/song.mp3"></audio>
+    <audio id="burstSnd"
+        src="https://cdn.pixabay.com/download/audio/2021/10/23/audio_3f6f4b5f55.mp3?filename=boom-143704.mp3"></audio>
+    <audio id="bgMusic"
+        src="https://cdn.pixabay.com/download/audio/2023/02/28/audio_32cfa8ce12.mp3?filename=happy-indian-festival-140010.mp3"
+        loop crossorigin></audio>
+
+    <script>
+        /* ========= Holi Balloon Burst 4.0 — main logic ========= */
+
+        const arena = document.getElementById('arena');
+        const startBtn = document.getElementById('startBtn');
+        const resetBtn = document.getElementById('resetBtn');
+        const countSelect = document.getElementById('countSelect');
+        const difficulty = document.getElementById('difficulty');
+        const scoreBox = document.getElementById('scoreBox');
+        const statusHint = document.getElementById('statusHint');
+        const musicToggle = document.getElementById('musicToggle');
+        const shareBtn = document.getElementById('shareBtn');
+        const nameInput = document.getElementById('nameInput');
+        const photoUpload = document.getElementById('photoUpload');
+        const finalSplash = document.getElementById('finalSplash');
+        const finalReplay = document.getElementById('finalReplay');
+        const finalShare = document.getElementById('finalShare');
+        const timerEl = document.getElementById('timer');
+        const popSnd = document.getElementById('popSnd');
+        const burstSnd = document.getElementById('burstSnd');
+        const bgMusic = document.getElementById('bgMusic');
+
+        let balloons = [];
+        let total = 7;
+        let score = 0;
+        let inactivityTimer = null;
+        let inactivityDelay = 8000; // 8s
+        let startTime = null;
+        let timerInterval = null;
+        let uploadedPhotoData = null;
+
+        /* gradient palettes for balloons */
+        const palettes = [
+            ['#ff5f6d', '#ffc371'],
+            ['#24c6dc', '#514a9d'],
+            ['#ff9a9e', '#fad0c4'],
+            ['#a1ffce', '#faffd1'],
+            ['#f6d365', '#fda085'],
+            ['#d4fc79', '#96e6a1'],
+            ['#ffd86b', '#ff9a9e'],
+            ['#a86bff', '#6bd3ff']
+        ];
+
+        /* Helpers */
+        function rand(min, max) { return Math.random() * (max - min) + min }
+        function pick(arr) { return arr[Math.floor(Math.random() * arr.length)] }
+        function setStatus(t) { statusHint.textContent = t; }
+
+        /* Music toggle */
+        let musicOn = false;
+        musicToggle.addEventListener('click', () => {
+            musicOn = !musicOn;
+            if (musicOn) {
+                bgMusic.play().catch(() => {/* autoplay blocked until gesture */ });
+                musicToggle.textContent = '🔊 Music On';
+            } else {
+                bgMusic.pause();
+                musicToggle.textContent = '🔈 Music Off';
+            }
+        });
+
+        /* Photo upload handling */
+        photoUpload.addEventListener('change', () => {
+            const file = photoUpload.files[0];
+            if (!file) return;
+            const r = new FileReader();
+            r.onload = () => { uploadedPhotoData = r.result; setStatus('Photo ready — new balloons will use it'); };
+            r.readAsDataURL(file);
+        });
+
+        /* Start / Reset */
+        startBtn.addEventListener('click', startGame);
+        resetBtn.addEventListener('click', resetGame);
+        finalReplay.addEventListener('click', () => {
+            hideFinal();
+            resetGame();
+            startGame();
+        });
+
+        finalShare.addEventListener('click', () => shareResult());
+
+        shareBtn.addEventListener('click', () => shareResult());
+
+        function resetGame() {
+            // clear balloons & particles
+            balloons.forEach(b => b.el?.remove());
+            balloons = [];
+            clearParticles();
+            score = 0;
+            updateScore();
+            setStatus('Reset — ready');
+            finalSplash.classList.remove('show');
+            clearTimers();
+        }
+
+        function startGame() {
+            resetGame();
+            total = parseInt(countSelect.value, 10) || 7;
+            score = 0;
+            updateScore();
+            createBalloons(total);
+            setStatus('Click balloons to burst them!');
+            startTime = Date.now();
+            startTimer();
+            scheduleInactivity();
+        }
+
+        /* timer UI */
+        function startTimer() {
+            clearInterval(timerInterval);
+            timerInterval = setInterval(() => {
+                const s = Math.floor((Date.now() - startTime) / 1000);
+                timerEl.textContent = `${s}s`;
+            }, 500);
+        }
+        function clearTimers() { clearInterval(timerInterval); clearTimeout(inactivityTimer); timerEl.textContent = '0s'; }
+
+        /* create balloons dynamically */
+        function createBalloons(n) {
+            const arenaRect = arena.getBoundingClientRect();
+            for (let i = 0; i < n; i++) {
+                const size = rand(80, 160) * ((difficulty.value === 'hard') ? 0.8 : (difficulty.value === 'easy') ? 1.1 : 1);
+                const left = rand(6, 90); // percent
+                const top = rand(8, 62); // percent
+                const palette = pick(palettes);
+                const id = 'b' + Date.now() + Math.floor(Math.random() * 9999) + i;
+                const el = document.createElement('div');
+                el.className = 'balloon';
+                el.style.width = size + 'px';
+                el.style.height = (size * 1.25) + 'px';
+                el.style.left = left + '%';
+                el.style.top = top + '%';
+                el.style.background = `linear-gradient(135deg, ${palette[0]}, ${palette[1]})`;
+                el.style.transformOrigin = 'center bottom';
+                el.dataset.id = id;
+                // optional photo
+                if (uploadedPhotoData) {
+                    const img = document.createElement('img');
+                    img.className = 'photo';
+                    img.src = uploadedPhotoData;
+                    img.alt = 'photo';
+                    el.appendChild(img);
+                }
+                // small floating animation
+                el.animate([
+                    { transform: 'translateY(0)' },
+                    { transform: `translateY(${rand(-10, -28)}px)` },
+                    { transform: 'translateY(0)' }
+                ], { duration: rand(3000, 6000), iterations: Infinity, direction: 'alternate', easing: 'ease-in-out' });
+
+                // event
+                el.addEventListener('click', (e) => {
+                    e.stopPropagation();
+                    burstBalloon(id);
+                });
+
+                arena.appendChild(el);
+                balloons.push({ id, el, burst: false });
+            }
+            updateScore();
+        }
+
+        /* burst behavior */
+        function burstBalloon(id) {
+            clearTimeout(inactivityTimer);
+            scheduleInactivity();
+            const b = balloons.find(x => x.id === id);
+            if (!b || b.burst) return;
+            b.burst = true;
+            const el = b.el;
+
+            // small pop animation
+            el.style.transition = 'transform 0.15s ease, opacity 0.25s ease';
+            el.style.transform = 'scale(0.12)';
+            el.style.opacity = '0';
+            popSnd.currentTime = 0; popSnd.play().catch(() => { });
+            // heavy boom sound for last
+            setTimeout(() => {
+                createConfettiBurst(el);
+                score++;
+                updateScore();
+                // remove element from DOM after short delay
+                setTimeout(() => { el.remove(); checkAllBurst(); }, 700);
+            }, 120);
+        }
+
+        /* confetti + emoji */
+        function createConfettiBurst(fromEl) {
+            // coordinates
+            const rect = arena.getBoundingClientRect();
+            const elRect = fromEl.getBoundingClientRect();
+            const originX = elRect.left + elRect.width / 2 - rect.left;
+            const originY = elRect.top + elRect.height / 2 - rect.top;
+
+            // confetti particles
+            const count = 40;
+            for (let i = 0; i < count; i++) {
+                const p = document.createElement('div');
+                p.className = 'particle';
+                p.style.left = originX + 'px';
+                p.style.top = originY + 'px';
+                p.style.width = (4 + Math.random() * 10) + 'px';
+                p.style.height = (7 + Math.random() * 12) + 'px';
+                p.style.background = pick(['#ff3b6b', '#ffb86b', '#6bff9e', '#6bd3ff', '#a86bff', '#ffd86b']);
+                p.style.transform = `translate(-50%,-50%) rotate(${Math.random() * 360}deg)`;
+                arena.appendChild(p);
+
+                const angle = rand(-Math.PI, Math.PI);
+                const speed = rand(80, 380);
+                const dx = Math.cos(angle) * speed;
+                const dy = Math.sin(angle) * speed - rand(20, 120);
+
+                // animate
+                p.animate([
+                    { transform: `translate(${0}px, ${0}px) rotate(0)`, opacity: 1 },
+                    { transform: `translate(${dx}px, ${dy}px) rotate(${Math.random() * 720}deg)`, opacity: 0.02 }
+                ], { duration: 800 + Math.random() * 1000, easing: 'cubic-bezier(.2,.8,.2,1)' })
+                    .onfinish = () => p.remove();
+            }
+
+            // emoji burst (smaller)
+            const emojis = ['🎉', '🌈', '💖', '✨', '🥳', '🎈'];
+            for (let j = 0; j < 8; j++) {
+                const em = document.createElement('div');
+                em.className = 'emoji';
+                em.textContent = pick(emojis);
+                em.style.left = originX + (rand(-40, 40)) + 'px';
+                em.style.top = originY + 'px';
+                em.style.opacity = 1;
+                arena.appendChild(em);
+
+                em.animate([
+                    { transform: 'translateY(0) scale(0.9)', opacity: 1 },
+                    { transform: `translateY(${- (120 + Math.random() * 120)}px) scale(1.15)`, opacity: 0 }
+                ], { duration: 1200 + Math.random() * 600, easing: 'cubic-bezier(.2,.9,.2,1)' })
+                    .onfinish = () => em.remove();
+            }
+
+            // small extra sound occasionally
+            burstSnd.currentTime = 0; burstSnd.play().catch(() => { });
+        }
+
+        /* confetti-only clear helper */
+        function clearParticles() {
+            document.querySelectorAll('.particle,.emoji').forEach(n => n.remove());
+        }
+
+        /* update score UI */
+        function updateScore() {
+            scoreBox.textContent = `Score: ${score} / ${total}`;
+        }
+
+        /* check if finished */
+        function checkAllBurst() {
+            const remaining = balloons.filter(b => !b.burst).length;
+            updateScore();
+            if (remaining <= 0) {
+                // celebration
+                setStatus('All burst — Happy Holi!');
+                showFinal();
+            } else {
+                setStatus(`${remaining} balloons left — keep bursting!`);
+            }
+        }
+
+        /* final celebration overlay */
+        function showFinal() {
+            // personalize
+            const name = (nameInput.value || '').trim();
+            const title = document.getElementById('finalTitle');
+            const text = document.getElementById('finalText');
+            title.textContent = name ? `Happy Holi, ${name}! 🌈` : 'Happy Holi! 🌈';
+            text.textContent = 'Rangon aur dhoom ke saath — enjoy your day!';
+            finalSplash.classList.add('show');
+            // big confetti shower
+            for (let i = 0; i < 180; i++) {
+                setTimeout(() => {
+                    const p = document.createElement('div');
+                    p.className = 'particle';
+                    p.style.left = rand(0, arena.clientWidth) + 'px';
+                    p.style.top = rand(0, arena.clientHeight) + 'px';
+                    p.style.width = (6 + Math.random() * 12) + 'px';
+                    p.style.height = (8 + Math.random() * 14) + 'px';
+                    p.style.background = pick(['#ff3b6b', '#ffb86b', '#6bff9e', '#6bd3ff', '#a86bff', '#ffd86b']);
+                    arena.appendChild(p);
+                    p.animate([{ transform: 'translateY(0)', opacity: 1 }, { transform: `translateY(${rand(360, 900)}px)`, opacity: 0 }], { duration: 1600 + Math.random() * 1200, easing: 'linear' })
+                        .onfinish = () => p.remove();
+                }, i * 6);
+            }
+
+            // stop timer
+            clearTimers();
+        }
+
+        /* share function */
+        function shareResult() {
+            const name = (nameInput.value || '').trim();
+            const shareText = name ? `Happy Holi, ${name}! 🎉 Check out this surprise.` : 'Happy Holi! 🎉 Check out this colorful surprise.';
+            const url = location.href;
+            if (navigator.share) {
+                navigator.share({ title: 'Holi Surprise', text: shareText, url }).catch(() => { });
+            } else {
+                // fallback: open WhatsApp web with prefilled text
+                const wa = `https://wa.me/?text=${encodeURIComponent(shareText + ' ' + url)}`;
+                window.open(wa, '_blank');
+            }
+        }
+
+        /* inactivity scheduling: auto-burst one random balloon */
+        function scheduleInactivity() {
+            clearTimeout(inactivityTimer);
+            inactivityTimer = setTimeout(() => {
+                const left = balloons.filter(b => !b.burst);
+                if (left.length > 0) {
+                    const pickOne = pick(left);
+                    burstBalloon(pickOne.id);
+                }
+                scheduleInactivity(); // schedule next auto-burst
+            }, inactivityDelay);
+        }
+
+        /* clear inactivity when user interacts with arena */
+        ['pointerdown', 'keydown', 'mousemove', 'touchstart'].forEach(evt => {
+            document.addEventListener(evt, () => { clearTimeout(inactivityTimer); scheduleInactivity(); }, { passive: true });
+        });
+
+        /* init with a starting set so user sees something */
+        (function init() {
+            total = parseInt(countSelect.value, 10);
+            createBalloons(total);
+            updateScore();
+            setStatus('Ready — click Start to restart, or just click balloons!');
+            // small autoplay for background music if allowed on gesture
+            document.addEventListener('click', () => {
+                // allow music play after user gesture if musicOn true
+                if (musicOn) bgMusic.play().catch(() => { });
+            }, { once: true });
+        })();
+
+        /* ensure cleanup on unload */
+        window.addEventListener('beforeunload', () => {
+            bgMusic.pause();
+            clearTimers();
+        });
+
+    </script>
+</body>
+
+</html>
