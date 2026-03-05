@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <title>Balloon Pop Pro Game</title>
+
+    <style>
+        body {
+            margin: 0;
+            overflow: hidden;
+            font-family: Arial;
+            background: linear-gradient(to top, #87cefa, #e0f7ff);
+            text-align: center;
+        }
+
+        h1 {
+            position: absolute;
+            top: 10px;
+            width: 100%;
+        }
+
+        #score {
+            position: absolute;
+            left: 20px;
+            top: 20px;
+            font-size: 22px;
+        }
+
+        #timer {
+            position: absolute;
+            right: 20px;
+            top: 20px;
+            font-size: 22px;
+        }
+
+        #level {
+            position: absolute;
+            top: 60px;
+            left: 20px;
+            font-size: 20px;
+        }
+
+        .balloon {
+            position: absolute;
+            border-radius: 50%;
+            cursor: pointer;
+        }
+
+        #restart {
+            position: absolute;
+            bottom: 30px;
+            left: 50%;
+            transform: translateX(-50%);
+            padding: 10px 20px;
+            font-size: 18px;
+            display: none;
+        }
+
+        .confetti {
+            position: absolute;
+            width: 6px;
+            height: 10px;
+            animation: fall 2s linear forwards;
+        }
+
+        @keyframes fall {
+            0% {
+                transform: translateY(0);
+            }
+
+            100% {
+                transform: translateY(600px);
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <h1>🎈 Balloon Pop Pro Game</h1>
+
+    <div id="score">Score: 0</div>
+    <div id="timer">Time: 30</div>
+    <div id="level">Level: 1</div>
+
+    <button id="restart" onclick="location.reload()">Restart Game</button>
+
+    <audio id="pop" src="https://cdn.pixabay.com/download/audio/2022/03/15/audio_62a1d97c67.mp3"></audio>
+
+    <script>
+
+        let score = 0
+        let time = 30
+        let level = 1
+
+        const scoreDisplay = document.getElementById("score")
+        const timerDisplay = document.getElementById("timer")
+        const levelDisplay = document.getElementById("level")
+        const restartBtn = document.getElementById("restart")
+        const popSound = document.getElementById("pop")
+
+        function randomColor() {
+            const colors = ["red", "blue", "green", "yellow", "purple", "orange", "pink"]
+            return colors[Math.floor(Math.random() * colors.length)]
+        }
+
+        function createBalloon() {
+
+            const balloon = document.createElement("div")
+            balloon.classList.add("balloon")
+
+            let size = Math.random() * 40 + 40
+            balloon.style.width = size + "px"
+            balloon.style.height = size * 1.2 + "px"
+
+            balloon.style.background = randomColor()
+
+            balloon.style.left = Math.random() * window.innerWidth + "px"
+            balloon.style.bottom = "-100px"
+
+            document.body.appendChild(balloon)
+
+            let speed = 2 + level
+
+            let rise = setInterval(() => {
+
+                let bottom = parseInt(balloon.style.bottom)
+
+                balloon.style.bottom = (bottom + speed) + "px"
+
+                if (bottom > window.innerHeight) {
+
+                    balloon.remove()
+                    clearInterval(rise)
+
+                }
+
+            }, 20)
+
+            balloon.addEventListener("click", () => {
+
+                score++
+
+                popSound.currentTime = 0
+                popSound.play()
+
+                scoreDisplay.innerText = "Score: " + score
+
+                createConfetti(balloon)
+
+                balloon.remove()
+                clearInterval(rise)
+
+                if (score % 10 === 0) {
+
+                    level++
+                    levelDisplay.innerText = "Level: " + level
+
+                }
+
+            })
+
+        }
+
+        setInterval(createBalloon, 1000)
+
+        function createConfetti(balloon) {
+
+            for (let i = 0; i < 20; i++) {
+
+                const conf = document.createElement("div")
+                conf.classList.add("confetti")
+
+                conf.style.left = balloon.style.left
+                conf.style.top = balloon.style.bottom
+                conf.style.background = randomColor()
+
+                document.body.appendChild(conf)
+
+                setTimeout(() => conf.remove(), 2000)
+
+            }
+
+        }
+
+        let gameTimer = setInterval(() => {
+
+            time--
+
+            timerDisplay.innerText = "Time: " + time
+
+            if (time <= 0) {
+
+                clearInterval(gameTimer)
+
+                alert("Game Over! Score: " + score)
+
+                restartBtn.style.display = "block"
+
+            }
+
+        }, 1000)
+
+    </script>
+
+</body>
+
+</html>
