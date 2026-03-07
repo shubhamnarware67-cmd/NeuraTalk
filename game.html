@@ -1,0 +1,362 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Brick Breaker Pro</title>
+
+    <style>
+        body {
+            margin: 0;
+            font-family: Arial;
+            background: #0f172a;
+            color: white;
+            text-align: center;
+        }
+
+        #menu {
+            position: absolute;
+            width: 100%;
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            background: #0f172a;
+        }
+
+        button {
+            padding: 12px 30px;
+            font-size: 18px;
+            margin: 10px;
+            cursor: pointer;
+            border: none;
+            border-radius: 6px;
+        }
+
+        .startBtn {
+            background: #22c55e;
+            color: white;
+        }
+
+        .pauseBtn {
+            background: #eab308;
+        }
+
+        canvas {
+            display: block;
+            margin: auto;
+            background: black;
+            border: 3px solid white;
+        }
+
+        #topUI {
+            display: flex;
+            justify-content: space-around;
+            padding: 10px;
+            font-size: 18px;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div id="menu">
+        <h1>🎮 Brick Breaker Pro</h1>
+        <button class="startBtn" onclick="startGame()">Start Game</button>
+    </div>
+
+    <div id="topUI" style="display:none;">
+        <div>Score: <span id="score">0</span></div>
+        <div>Level: <span id="level">1</span></div>
+        <div>Lives: <span id="lives">3</span></div>
+        <div>HighScore: <span id="highscore">0</span></div>
+        <button class="pauseBtn" onclick="togglePause()">Pause</button>
+    </div>
+
+    <canvas id="gameCanvas" width="700" height="400"></canvas>
+
+    <script>
+
+        const canvas = document.getElementById("gameCanvas")
+        const ctx = canvas.getContext("2d")
+
+        let ballX, ballY, dx, dy
+        let paddleX
+        let paddleWidth = 120
+        let paddleHeight = 12
+
+        let right = false
+        let left = false
+
+        let score = 0
+        let lives = 3
+        let level = 1
+
+        let paused = false
+
+        let highScore = localStorage.getItem("bb_highscore") || 0
+        document.getElementById("highscore").innerText = highScore
+
+        let brickRow = 3
+        let brickCol = 7
+
+        let brickWidth = 80
+        let brickHeight = 20
+        let brickPad = 10
+        let offsetTop = 40
+        let offsetLeft = 30
+
+        let bricks = []
+        let powerUps = []
+
+        function startGame() {
+
+            document.getElementById("menu").style.display = "none"
+            document.getElementById("topUI").style.display = "flex"
+
+            resetBall()
+
+            createBricks()
+
+            gameLoop()
+
+        }
+
+        function resetBall() {
+
+            ballX = canvas.width / 2
+            ballY = canvas.height - 40
+            dx = 3
+            dy = -3
+            paddleX = (canvas.width - paddleWidth) / 2
+
+        }
+
+        function createBricks() {
+
+            bricks = []
+
+            for (let c = 0; c < brickCol; c++) {
+
+                bricks[c] = []
+
+                for (let r = 0; r < brickRow; r++) {
+
+                    bricks[c][r] = { x: 0, y: 0, status: 1 }
+
+                }
+
+            }
+
+        }
+
+        document.addEventListener("keydown", e => {
+            if (e.key === "ArrowRight") right = true
+            if (e.key === "ArrowLeft") left = true
+            if (e.key === "p") togglePause()
+        })
+
+        document.addEventListener("keyup", e => {
+            if (e.key === "ArrowRight") right = false
+            if (e.key === "ArrowLeft") left = false
+        })
+
+        function drawBall() {
+
+            ctx.beginPath()
+            ctx.arc(ballX, ballY, 8, 0, Math.PI * 2)
+            ctx.fillStyle = "white"
+            ctx.fill()
+            ctx.closePath()
+
+        }
+
+        function drawPaddle() {
+
+            ctx.fillStyle = "cyan"
+            ctx.fillRect(paddleX, canvas.height - paddleHeight, paddleWidth, paddleHeight)
+
+        }
+
+        function drawBricks() {
+
+            for (let c = 0; c < brickCol; c++) {
+                for (let r = 0; r < brickRow; r++) {
+
+                    let b = bricks[c][r]
+
+                    if (b.status == 1) {
+
+                        let brickX = (c * (brickWidth + brickPad)) + offsetLeft
+                        let brickY = (r * (brickHeight + brickPad)) + offsetTop
+
+                        b.x = brickX
+                        b.y = brickY
+
+                        ctx.fillStyle = "orange"
+                        ctx.fillRect(brickX, brickY, brickWidth, brickHeight)
+
+                    }
+
+                }
+            }
+
+        }
+
+        function collision() {
+
+            for (let c = 0; c < brickCol; c++) {
+                for (let r = 0; r < brickRow; r++) {
+
+                    let b = bricks[c][r]
+
+                    if (b.status == 1) {
+
+                        if (
+                            ballX > b.x &&
+                            ballX < b.x + brickWidth &&
+                            ballY > b.y &&
+                            ballY < b.y + brickHeight
+                        ) {
+
+                            dy = -dy
+                            b.status = 0
+                            score += 10
+
+                            if (Math.random() < 0.2) {
+                                powerUps.push({ x: b.x, y: b.y, type: "expand" })
+                            }
+
+                            updateUI()
+
+                        }
+
+                    }
+
+                }
+            }
+
+        }
+
+        function drawPowerUps() {
+
+            powerUps.forEach((p, i) => {
+
+                p.y += 2
+
+                ctx.fillStyle = "lime"
+                ctx.fillRect(p.x, p.y, 20, 20)
+
+                if (
+                    p.y > canvas.height - paddleHeight &&
+                    p.x > paddleX &&
+                    p.x < paddleX + paddleWidth
+                ) {
+
+                    if (p.type == "expand") {
+                        paddleWidth += 40
+                    }
+
+                    powerUps.splice(i, 1)
+
+                }
+
+            })
+
+        }
+
+        function updateUI() {
+
+            document.getElementById("score").innerText = score
+            document.getElementById("lives").innerText = lives
+            document.getElementById("level").innerText = level
+
+            if (score > highScore) {
+
+                highScore = score
+                localStorage.setItem("bb_highscore", highScore)
+                document.getElementById("highscore").innerText = highScore
+
+            }
+
+        }
+
+        function togglePause() {
+            paused = !paused
+        }
+
+        function nextLevel() {
+
+            level++
+            brickRow++
+
+            createBricks()
+            resetBall()
+
+        }
+
+        function gameLoop() {
+
+            if (!paused) {
+
+                ctx.clearRect(0, 0, canvas.width, canvas.height)
+
+                drawBricks()
+                drawBall()
+                drawPaddle()
+                drawPowerUps()
+
+                collision()
+
+                if (ballX + dx > canvas.width - 8 || ballX + dx < 8) dx = -dx
+                if (ballY + dy < 8) dy = -dy
+
+                else if (ballY + dy > canvas.height - 8) {
+
+                    if (ballX > paddleX && ballX < paddleX + paddleWidth) {
+                        dy = -dy
+                    }
+                    else {
+
+                        lives--
+
+                        updateUI()
+
+                        if (lives <= 0) {
+                            alert("Game Over")
+                            location.reload()
+                        }
+
+                        resetBall()
+
+                    }
+
+                }
+
+                if (right && paddleX < canvas.width - paddleWidth) paddleX += 6
+                if (left && paddleX > 0) paddleX -= 6
+
+                ballX += dx
+                ballY += dy
+
+                let allBroken = true
+
+                for (let c = 0; c < brickCol; c++) {
+                    for (let r = 0; r < brickRow; r++) {
+                        if (bricks[c][r].status == 1) allBroken = false
+                    }
+                }
+
+                if (allBroken) nextLevel()
+
+            }
+
+            requestAnimationFrame(gameLoop)
+
+        }
+
+    </script>
+
+</body>
+
+</html>

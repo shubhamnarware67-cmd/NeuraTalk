@@ -1,0 +1,464 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Bansal College</title>
+  <style>
+    /* ===== HEADER ===== */
+    #myHead {
+      padding: 15px 20px;
+      font-size: 2.5vw;
+      color: brown;
+      text-align: center;
+      background: linear-gradient(to left, rgb(239, 68, 162), rgb(211, 201, 4), rgb(10, 101, 238));
+      position: relative;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    /* ===== MENU BUTTON IN HEADER ===== */
+    .openbtn {
+      font-size: 20px;
+      cursor: pointer;
+      background-color: rgb(14, 182, 129);
+      color: white;
+      padding: 10px 15px;
+      border: none;
+      border-radius: 6px;
+      position: absolute;
+      left: 20px;
+      top: 50%;
+      transform: translateY(-50%);
+      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+      transition: background-color 0.3s ease;
+    }
+
+    .openbtn:hover {
+      background-color: darksalmon;
+    }
+
+    /* ===== LOGIN BUTTON IN HEADER ===== */
+    .login-btn {
+      position: absolute;
+      right: 20px;
+      top: 50%;
+      transform: translateY(-50%);
+      background: linear-gradient(to right, rgb(239, 68, 162), rgb(10, 101, 238));
+      color: white;
+      border: none;
+      padding: 8px 18px;
+      border-radius: 6px;
+      font-size: 16px;
+      cursor: pointer;
+      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
+      transition: background 0.3s ease;
+    }
+
+    .login-btn:hover {
+      background: linear-gradient(to right, rgb(211, 201, 4), rgb(239, 68, 162));
+    }
+
+    /* ===== SIDEBAR ===== */
+    .sidebar {
+      height: 100%;
+      width: 0;
+      position: fixed;
+      top: 0;
+      left: 0;
+      background-color: antiquewhite;
+      overflow-x: hidden;
+      transition: 0.5s;
+      padding-top: 60px;
+      z-index: 2;
+    }
+
+    .sidebar a {
+      padding: 10px 15px;
+      text-decoration: none;
+      font-size: 20px;
+      color: brown;
+      display: block;
+      transition: 0.3s;
+    }
+
+    .sidebar a:hover {
+      background-color: #f5c6a5;
+    }
+
+    .closebtn {
+      position: absolute;
+      top: 20px;
+      right: 25px;
+      font-size: 30px;
+      color: brown;
+    }
+
+    /* ===== CAROUSEL ===== */
+    #mycarousel {
+      width: 100%;
+      height: 400px;
+      display: block;
+      object-fit: cover;
+    }
+
+    /* ===== CONTENT ===== */
+    #content {
+      margin: 20px;
+      padding: 20px;
+      font-size: 18px;
+      line-height: 1.6;
+      background-color: #f5f5f5;
+      border-radius: 10px;
+      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    }
+
+    /* ===== FAQ ===== */
+    .faq-section {
+      margin: 40px 20px;
+      padding: 20px;
+      background-color: #fff;
+      border-radius: 10px;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    }
+
+    .faq-section h2 {
+      text-align: center;
+      color: brown;
+      font-size: 28px;
+      margin-bottom: 20px;
+      background: linear-gradient(to right, rgb(239, 68, 162), rgb(10, 101, 238));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    .accordion {
+      background: linear-gradient(to right, rgb(239, 68, 162), rgb(10, 101, 238));
+      color: white;
+      cursor: pointer;
+      padding: 14px 18px;
+      width: 100%;
+      text-align: left;
+      border: none;
+      outline: none;
+      transition: background 0.4s ease;
+      border-radius: 8px;
+      font-size: 18px;
+      margin-bottom: 10px;
+      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+    }
+
+    .accordion:hover {
+      background: linear-gradient(to right, rgb(211, 201, 4), rgb(239, 68, 162));
+    }
+
+    .accordion:after {
+      content: '\002B';
+      font-weight: bold;
+      float: right;
+      margin-left: 5px;
+    }
+
+    .accordion.active:after {
+      content: "\2212";
+    }
+
+    .panel {
+      padding: 0 18px;
+      background-color: #f8f8f8;
+      max-height: 0;
+      overflow: hidden;
+      transition: max-height 0.3s ease-out;
+      border-radius: 0 0 8px 8px;
+      box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.05);
+    }
+
+    .panel p {
+      color: #444;
+      font-size: 16px;
+      margin: 15px 0;
+    }
+
+    /* ===== LOGIN MODAL ===== */
+    .modal {
+      display: none;
+      position: fixed;
+      z-index: 10;
+      left: 0;
+      top: 0;
+      width: 100%;
+      height: 100%;
+      overflow: auto;
+      background-color: rgba(0, 0, 0, 0.5);
+      animation: fadeIn 0.3s ease;
+    }
+
+    @keyframes fadeIn {
+      from {
+        opacity: 0;
+      }
+
+      to {
+        opacity: 1;
+      }
+    }
+
+    .modal-content {
+      background: rgba(255, 255, 255, 0.15);
+      backdrop-filter: blur(10px);
+      border-radius: 15px;
+      margin: 10% auto;
+      padding: 25px 30px;
+      border: 1px solid rgba(255, 255, 255, 0.3);
+      width: 350px;
+      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+      animation: slideIn 0.5s ease;
+      color: white;
+      font-family: Arial, sans-serif;
+    }
+
+    @keyframes slideIn {
+      from {
+        transform: translateY(-50px);
+        opacity: 0;
+      }
+
+      to {
+        transform: translateY(0);
+        opacity: 1;
+      }
+    }
+
+    .modal-content h3 {
+      text-align: center;
+      color: brown;
+      font-size: 22px;
+      margin-bottom: 15px;
+    }
+
+    .modal-content input[type="text"],
+    .modal-content input[type="password"] {
+      width: 100%;
+      padding: 10px;
+      margin: 8px 0;
+      border: none;
+      border-radius: 6px;
+      background: rgba(255, 255, 255, 0.8);
+      font-size: 16px;
+    }
+
+    .modal-content button {
+      width: 100%;
+      padding: 10px;
+      background: linear-gradient(to right, rgb(239, 68, 162), rgb(10, 101, 238));
+      border: none;
+      border-radius: 6px;
+      color: white;
+      font-size: 16px;
+      cursor: pointer;
+      transition: 0.3s;
+      margin-top: 5px;
+    }
+
+    .modal-content button:hover {
+      background: linear-gradient(to right, rgb(211, 201, 4), rgb(239, 68, 162));
+    }
+
+    .close-modal {
+      color: white;
+      float: right;
+      font-size: 25px;
+      font-weight: bold;
+      cursor: pointer;
+    }
+
+    .close-modal:hover {
+      color: red;
+    }
+
+    /* Responsive */
+    @media (max-width: 768px) {
+      #myHead {
+        flex-direction: column;
+        padding: 10px;
+      }
+
+      .openbtn,
+      .login-btn {
+        position: static;
+        transform: none;
+        margin: 5px;
+      }
+
+      .modal-content {
+        width: 80%;
+      }
+
+      #mycarousel {
+        height: 250px;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+  <!-- Sidebar -->
+  <div id="mySidebar" class="sidebar">
+    <a href="javascript:void(0)" class="closebtn" onclick="closeNav()">×</a>
+    <a href="#" onclick="showContent('home')">Home</a>
+    <a href="#" onclick="showContent('about')">About College</a>
+    <a href="#" onclick="showContent('courses')">Courses</a>
+    <a href="#" onclick="showContent('admissions')">Admissions</a>
+    <a href="#" onclick="showContent('contact')">Contact</a>
+  </div>
+
+  <!-- Header -->
+  <div id="myHead">
+    <button class="openbtn" onclick="openNav()">☰ Menu</button>
+    <div>Bansal College of Engineering</div>
+    <button class="login-btn" onclick="openModal()">Login</button>
+  </div>
+
+  <!-- Carousel -->
+  <div>
+    <img id="mycarousel" src="/Asset/image/b4751-17159410592278-1920.webp" alt="carousel image">
+  </div>
+
+  <!-- Content -->
+  <div id="content">
+    <p>Welcome to Bansal College of Engineering. Click on the menu to explore more information!</p>
+  </div>
+
+  <!-- FAQ Section -->
+  <div class="faq-section">
+    <h2>Frequently Asked Questions (FAQs)</h2>
+
+    <button class="accordion">1. What courses are offered at Bansal College?</button>
+    <div class="panel">
+      <p><b>We offer undergraduate and postgraduate programs in:</b></p>
+      <ol>
+        <li>Computer Science Engineering</li>
+        <li>Mechanical Engineering</li>
+        <li>Civil Engineering</li>
+        <li>Electrical & Electronics Engineering</li>
+      </ol>
+    </div>
+
+    <button class="accordion">2. How can I apply for admission?</button>
+    <div class="panel">
+      <p>Visit our official admission portal or contact the admission office for step-by-step guidance on applying.</p>
+    </div>
+
+    <button class="accordion">3. Does the college provide hostel facilities?</button>
+    <div class="panel">
+      <p>Yes, we provide separate, fully equipped hostels for boys and girls with 24/7 security and Wi-Fi access.</p>
+    </div>
+
+    <button class="accordion">4. What placement opportunities are available?</button>
+    <div class="panel">
+      <p>Our dedicated placement cell ensures top placements with companies like TCS, Infosys, Wipro, and more every
+        year.</p>
+    </div>
+
+    <button class="accordion">5. How can I contact the college?</button>
+    <div class="panel">
+      <p>You can reach us at <strong>info@bansalcollege.edu.in</strong> or call <strong>+91-9876543210</strong>.</p>
+    </div>
+  </div>
+
+  <!-- LOGIN MODAL -->
+  <div id="loginModal" class="modal">
+    <div class="modal-content">
+      <span class="close-modal" onclick="closeModal()">&times;</span>
+      <h3>Login Portal</h3>
+      <form>
+        <input type="text" placeholder="Username" required>
+        <input type="password" placeholder="Password" required>
+        <button type="submit">Login</button>
+      </form>
+    </div>
+  </div>
+
+  <script>
+    /* Sidebar functions */
+    function openNav() {
+      document.getElementById("mySidebar").style.width = "250px";
+    }
+    function closeNav() {
+      document.getElementById("mySidebar").style.width = "0";
+    }
+
+    /* Carousel */
+    var mymtImages = [
+      "/Asset/image/bird.png",
+      "/demo/b4751-17159410592278-1920.webp="
+    ];
+    var index = 0;
+    function slideshow() {
+      var myImg = document.getElementById("mycarousel");
+      index = (index + 1) % mymtImages.length;
+      myImg.src = mymtImages[index];
+      setTimeout(slideshow, 3000);
+    }
+    slideshow();
+
+    /* Dynamic Content */
+    function showContent(section) {
+      let content = document.getElementById("content");
+      let text = "";
+      switch (section) {
+        case "home":
+          text = "Welcome to Bansal College of Engineering! Our institution is dedicated to excellence in education, innovation, and leadership.";
+          break;
+        case "about":
+          text = "Bansal College of Engineering is one of the premier engineering colleges in India, providing top-quality education and state-of-the-art facilities.";
+          break;
+        case "courses":
+          text = "We offer courses in Computer Science, Mechanical Engineering, Civil Engineering, Electrical Engineering, and more.";
+          break;
+        case "admissions":
+          text = "Admissions are open! Apply now through our official portal and begin your journey toward a successful career.";
+          break;
+        case "contact":
+          text = "Contact us at: info@bansalcollege.edu.in or call +91-9876543210 for more details.";
+          break;
+        default:
+          text = "Click on a menu item to view more details.";
+      }
+      content.innerHTML = `<p>${text}</p>`;
+      closeNav();
+    }
+
+    /* Accordion */
+    var acc = document.getElementsByClassName("accordion");
+    for (let i = 0; i < acc.length; i++) {
+      acc[i].addEventListener("click", function () {
+        this.classList.toggle("active");
+        var panel = this.nextElementSibling;
+        if (panel.style.maxHeight) {
+          panel.style.maxHeight = null;
+        } else {
+          panel.style.maxHeight = panel.scrollHeight + "px";
+        }
+      });
+    }
+
+    /* Modal Login */
+    function openModal() {
+      document.getElementById("loginModal").style.display = "block";
+    }
+    function closeModal() {
+      document.getElementById("loginModal").style.display = "none";
+    }
+    window.onclick = function (event) {
+      if (event.target == document.getElementById("loginModal")) {
+        closeModal();
+      }
+    }
+  </script>
+</body>
+
+</html>
