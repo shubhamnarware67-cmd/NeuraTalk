@@ -1,0 +1,379 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Incredible India Explorer</title>
+
+<link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css"/>
+
+<style>
+
+body{
+margin:0;
+font-family:Arial;
+background:#f4f4f4;
+transition:0.3s;
+}
+
+.dark{
+background:#121212;
+color:white;
+}
+
+header{
+background:linear-gradient(orange,white,green);
+padding:20px;
+text-align:center;
+}
+
+nav{
+background:#333;
+padding:10px;
+text-align:center;
+}
+
+nav a{
+color:white;
+margin:10px;
+text-decoration:none;
+}
+
+button{
+padding:8px 12px;
+cursor:pointer;
+margin:5px;
+}
+
+.hero{
+height:300px;
+display:flex;
+align-items:center;
+justify-content:center;
+color:white;
+font-size:35px;
+background-size:cover;
+background-position:center;
+}
+
+.search{
+text-align:center;
+margin:20px;
+}
+
+.search input{
+padding:10px;
+width:250px;
+}
+
+.places{
+display:flex;
+flex-wrap:wrap;
+justify-content:center;
+}
+
+.card{
+width:250px;
+background:white;
+margin:15px;
+border-radius:10px;
+box-shadow:0 4px 10px rgba(0,0,0,0.2);
+transition:0.3s;
+}
+
+.dark .card{
+background:#222;
+}
+
+.card:hover{
+transform:scale(1.05);
+}
+
+.card img{
+width:100%;
+border-radius:10px 10px 0 0;
+}
+
+.card h3{
+padding:10px;
+}
+
+.card p{
+padding:10px;
+}
+
+.festivals{
+display:flex;
+justify-content:center;
+flex-wrap:wrap;
+gap:20px;
+padding:20px;
+}
+
+.festival-card{
+background:white;
+padding:20px;
+border-radius:10px;
+box-shadow:0 4px 10px gray;
+}
+
+.dark .festival-card{
+background:#222;
+}
+
+.gallery{
+display:flex;
+flex-wrap:wrap;
+justify-content:center;
+gap:10px;
+padding:20px;
+}
+
+.gallery img{
+width:200px;
+border-radius:10px;
+cursor:pointer;
+}
+
+#lightbox{
+display:none;
+position:fixed;
+top:0;
+left:0;
+width:100%;
+height:100%;
+background:rgba(0,0,0,0.8);
+align-items:center;
+justify-content:center;
+}
+
+#lightbox img{
+width:60%;
+}
+
+.quiz{
+text-align:center;
+padding:20px;
+}
+
+#map{
+height:400px;
+margin:20px;
+}
+
+.planner{
+text-align:center;
+padding:20px;
+}
+
+footer{
+background:#222;
+color:white;
+text-align:center;
+padding:15px;
+}
+
+</style>
+</head>
+
+<body>
+
+<header>
+<h1>Incredible India 🇮🇳</h1>
+<button onclick="toggleMode()">🌙 Dark Mode</button>
+</header>
+
+<nav>
+<a href="#places">Places</a>
+<a href="#festivals">Festivals</a>
+<a href="#gallery">Gallery</a>
+<a href="#quiz">Quiz</a>
+<a href="#planner">Planner</a>
+</nav>
+
+<div class="hero" id="hero">
+Explore India
+</div>
+
+<div class="search">
+<input type="text" id="search" placeholder="Search places..." onkeyup="searchPlaces()">
+</div>
+
+<section class="places" id="places">
+
+<div class="card">
+<img src="https://upload.wikimedia.org/wikipedia/commons/d/da/Taj-Mahal.jpg">
+<h3>Taj Mahal</h3>
+<p>Beautiful monument located in Agra.</p>
+</div>
+
+<div class="card">
+<img src="https://upload.wikimedia.org/wikipedia/commons/f/fc/India_Gate_in_New_Delhi.jpg">
+<h3>India Gate</h3>
+<p>Historic war memorial in Delhi.</p>
+</div>
+
+<div class="card">
+<img src="https://upload.wikimedia.org/wikipedia/commons/4/4c/Gateway_of_India.jpg">
+<h3>Gateway of India</h3>
+<p>Famous monument in Mumbai.</p>
+</div>
+
+</section>
+
+<h2 style="text-align:center">Indian Festivals</h2>
+
+<section class="festivals" id="festivals">
+
+<div class="festival-card">
+<h3>Diwali</h3>
+<p>Festival of lights celebrated across India.</p>
+</div>
+
+<div class="festival-card">
+<h3>Holi</h3>
+<p>Festival of colors celebrated in spring.</p>
+</div>
+
+</section>
+
+<h2 style="text-align:center">Gallery</h2>
+
+<div class="gallery" id="gallery">
+
+<img src="https://upload.wikimedia.org/wikipedia/commons/d/da/Taj-Mahal.jpg" onclick="openImage(this)">
+<img src="https://upload.wikimedia.org/wikipedia/commons/f/fc/India_Gate_in_New_Delhi.jpg" onclick="openImage(this)">
+<img src="https://upload.wikimedia.org/wikipedia/commons/4/4c/Gateway_of_India.jpg" onclick="openImage(this)">
+
+</div>
+
+<div id="lightbox" onclick="closeImage()">
+<img id="lightbox-img">
+</div>
+
+<h2 style="text-align:center">India Quiz</h2>
+
+<div class="quiz" id="quiz">
+
+<p>1️⃣ Taj Mahal kis city me hai?</p>
+<button onclick="answer('agra')">Agra</button>
+<button onclick="answer('delhi')">Delhi</button>
+
+<p>2️⃣ India ka national animal kya hai?</p>
+<button onclick="answer2('tiger')">Tiger</button>
+<button onclick="answer2('lion')">Lion</button>
+
+<p>3️⃣ India Gate kis city me hai?</p>
+<button onclick="answer3('delhi')">Delhi</button>
+<button onclick="answer3('mumbai')">Mumbai</button>
+
+<p id="quizResult"></p>
+
+</div>
+
+<h2 style="text-align:center">Travel Planner</h2>
+
+<div class="planner" id="planner">
+
+<input id="place" placeholder="Where do you want to go?">
+<button onclick="plan()">Plan Trip</button>
+
+<p id="planResult"></p>
+
+</div>
+
+<h2 style="text-align:center">Explore Map</h2>
+
+<div id="map"></div>
+
+<footer>
+<p>Made with ❤️ for India</p>
+</footer>
+
+<script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+
+<script>
+
+function toggleMode(){
+document.body.classList.toggle("dark");
+}
+
+function searchPlaces(){
+let input=document.getElementById("search").value.toLowerCase();
+let cards=document.querySelectorAll(".card");
+
+cards.forEach(card=>{
+if(card.innerText.toLowerCase().includes(input)){
+card.style.display="block";
+}else{
+card.style.display="none";
+}
+});
+}
+
+let images=[
+"https://images.unsplash.com/photo-1524492412937-b28074a5d7da",
+"https://images.unsplash.com/photo-1587474260584-136574528ed5",
+"https://images.unsplash.com/photo-1599661046289-e31897846e41"
+];
+
+let i=0;
+
+function changeHero(){
+document.getElementById("hero").style.backgroundImage="url("+images[i]+")";
+i++;
+if(i==images.length){i=0;}
+}
+
+setInterval(changeHero,3000);
+changeHero();
+
+function openImage(img){
+document.getElementById("lightbox").style.display="flex";
+document.getElementById("lightbox-img").src=img.src;
+}
+
+function closeImage(){
+document.getElementById("lightbox").style.display="none";
+}
+
+function answer(a){
+if(a==="agra"){
+document.getElementById("quizResult").innerText="Correct!";
+}else{
+document.getElementById("quizResult").innerText="Wrong answer";
+}
+}
+
+function answer2(a){
+if(a==="tiger"){
+document.getElementById("quizResult").innerText="Correct!";
+}else{
+document.getElementById("quizResult").innerText="Wrong answer";
+}
+}
+
+function answer3(a){
+if(a==="delhi"){
+document.getElementById("quizResult").innerText="Correct!";
+}else{
+document.getElementById("quizResult").innerText="Wrong answer";
+}
+}
+
+function plan(){
+let place=document.getElementById("place").value;
+document.getElementById("planResult").innerText=
+"Suggested trip: Visit monuments, try local food and explore markets in "+place;
+}
+
+var map = L.map('map').setView([20.5937,78.9629],5);
+
+L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png').addTo(map);
+
+L.marker([27.1751,78.0421]).addTo(map).bindPopup("Taj Mahal");
+L.marker([28.6129,77.2295]).addTo(map).bindPopup("India Gate");
+L.marker([18.9220,72.8347]).addTo(map).bindPopup("Gateway of India");
+
+</script>
+
+</body>
+</html>
