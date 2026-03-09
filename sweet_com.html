@@ -1,0 +1,285 @@
+```html
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sweet Delight Shop</title>
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+
+    <style>
+        body {
+            font-family: Arial;
+            margin: 0;
+            background: #fff3f0;
+            transition: .4s;
+        }
+
+        .dark {
+            background: #121212;
+            color: white;
+        }
+
+        nav {
+            display: flex;
+            justify-content: space-between;
+            padding: 15px 40px;
+            background: linear-gradient(45deg, #ff4d4d, #ff944d);
+            color: white;
+        }
+
+        nav ul {
+            display: flex;
+            gap: 20px;
+            list-style: none;
+        }
+
+        nav a {
+            text-decoration: none;
+            color: white;
+            font-weight: bold;
+        }
+
+        .hero {
+            height: 60vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 40px;
+            color: white;
+            background: url("https://images.unsplash.com/photo-1606312619070-d48b4c652a52") center/cover;
+        }
+
+        section {
+            padding: 40px 8%;
+            text-align: center;
+        }
+
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+        }
+
+        .card {
+            background: white;
+            padding: 15px;
+            border-radius: 10px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+            transition: .3s;
+        }
+
+        .card:hover {
+            transform: scale(1.05);
+        }
+
+        .card img {
+            width: 100%;
+            height: 150px;
+            object-fit: cover;
+            border-radius: 8px;
+        }
+
+        button {
+            padding: 7px 15px;
+            border: none;
+            background: #ff4d4d;
+            color: white;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        .cart {
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            margin-top: 30px;
+        }
+
+        footer {
+            background: #333;
+            color: white;
+            padding: 10px;
+            text-align: center;
+        }
+
+        .dark .card {
+            background: #1e1e1e;
+        }
+    </style>
+</head>
+
+<body>
+
+    <nav>
+        <h2><i class="fa-solid fa-cake-candles"></i> Sweet Delight</h2>
+
+        <ul>
+            <li><a href="#">Home</a></li>
+            <li><a href="#menu">Menu</a></li>
+            <li><a href="#cart">Cart</a></li>
+        </ul>
+
+        <button onclick="toggleMode()">🌙</button>
+
+    </nav>
+
+    <div class="hero">
+        Welcome To Sweet Delight 🍩
+    </div>
+
+    <section id="menu">
+
+        <h2>Our Sweet Menu</h2>
+
+        <div class="grid" id="menuItems"></div>
+
+    </section>
+
+    <section id="cart">
+
+        <h2><i class="fa-solid fa-cart-shopping"></i> Cart</h2>
+
+        <div class="cart">
+
+            <ul id="cartList"></ul>
+
+            <h3>Total: ₹ <span id="total">0</span></h3>
+
+            <button onclick="payment()">Proceed Payment</button>
+
+            <button onclick="downloadBill()">Download Invoice</button>
+
+        </div>
+
+    </section>
+
+    <section>
+
+        <h2>Admin Panel</h2>
+
+        <input id="newSweet" placeholder="Sweet Name">
+        <input id="newPrice" placeholder="Price">
+        <button onclick="addSweet()">Add Sweet</button>
+
+    </section>
+
+    <footer>
+        © 2026 Sweet Delight
+    </footer>
+
+    <script>
+
+        let sweets = [
+            { name: "Gulab Jamun", price: 250, img: "https://images.unsplash.com/photo-1631452180519-c014fe946bc7" },
+            { name: "Rasgulla", price: 220, img: "https://images.unsplash.com/photo-1601050690597-df0568f70950" },
+            { name: "Kaju Katli", price: 900, img: "https://images.unsplash.com/photo-1617196035154-1e19c1af4d37" },
+            { name: "Laddu", price: 300, img: "https://images.unsplash.com/photo-1621939514649-280e2ee25f60" },
+            { name: "Barfi", price: 400, img: "https://images.unsplash.com/photo-1603532648955-039310d9ed75" },
+            { name: "Jalebi", price: 200, img: "https://images.unsplash.com/photo-1628294896516-3e4c2c7b6d3c" },
+            { name: "Peda", price: 350, img: "https://images.unsplash.com/photo-1605478529813-6b5b08d4a6c0" },
+            { name: "Milk Cake", price: 420, img: "https://images.unsplash.com/photo-1587248720327-8eb72564be1e" },
+            { name: "Halwa", price: 180, img: "https://images.unsplash.com/photo-1604908176997-4317f7c3a5e7" },
+            { name: "Soan Papdi", price: 260, img: "https://images.unsplash.com/photo-1615485290382-441e4d049cb5" }
+        ]
+
+        let cart = []
+        let total = 0
+
+        function loadMenu() {
+
+            let menu = document.getElementById("menuItems")
+            menu.innerHTML = ""
+
+            sweets.forEach((s, i) => {
+
+                menu.innerHTML += `
+<div class="card">
+<img src="${s.img}">
+<h3>${s.name}</h3>
+<p>₹${s.price}</p>
+<button onclick="addCart(${i})">Add</button>
+</div>
+`
+
+            })
+
+        }
+
+        function addCart(i) {
+
+            cart.push(sweets[i])
+            total += sweets[i].price
+            updateCart()
+
+        }
+
+        function updateCart() {
+
+            let list = document.getElementById("cartList")
+            list.innerHTML = ""
+
+            cart.forEach(item => {
+                list.innerHTML += `<li>${item.name} - ₹${item.price}</li>`
+            })
+
+            document.getElementById("total").innerText = total
+
+        }
+
+        function payment() {
+
+            alert("Payment Successful 🎉\nOrder Placed!")
+
+            cart = []
+            total = 0
+            updateCart()
+
+        }
+
+        function downloadBill() {
+
+            let text = "Sweet Shop Invoice\n\n"
+
+            cart.forEach(i => {
+                text += i.name + " - ₹" + i.price + "\n"
+            })
+
+            text += "\nTotal: ₹" + total
+
+            let blob = new Blob([text], { type: "text/plain" })
+            let a = document.createElement("a")
+
+            a.href = URL.createObjectURL(blob)
+            a.download = "invoice.txt"
+            a.click()
+
+        }
+
+        function toggleMode() {
+
+            document.body.classList.toggle("dark")
+
+        }
+
+        function addSweet() {
+
+            let name = document.getElementById("newSweet").value
+            let price = document.getElementById("newPrice").value
+
+            sweets.push({ name: name, price: price, img: "https://images.unsplash.com/photo-1606312619070-d48b4c652a52" })
+
+            loadMenu()
+
+        }
+
+        loadMenu()
+
+    </script>
+
+</body>
+
+</html>
+```
