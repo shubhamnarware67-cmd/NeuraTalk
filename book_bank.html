@@ -1,0 +1,755 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Ultra Book Bank</title>
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+
+<style>
+
+*{
+margin:0;
+padding:0;
+box-sizing:border-box;
+font-family:Arial;
+}
+
+body{
+background:linear-gradient(135deg,#667eea,#764ba2);
+color:white;
+min-height:100vh;
+overflow-x:hidden;
+transition:0.4s;
+}
+
+/* DARK MODE */
+
+body.dark{
+background:#111;
+color:white;
+}
+
+/* FLOATING BACKGROUND */
+
+.bg span{
+position:absolute;
+width:20px;
+height:20px;
+background:white;
+opacity:0.2;
+border-radius:50%;
+animation:float 10s linear infinite;
+}
+
+@keyframes float{
+0%{transform:translateY(100vh)}
+100%{transform:translateY(-100vh)}
+}
+
+/* HEADER */
+
+header{
+display:flex;
+justify-content:space-between;
+align-items:center;
+padding:20px;
+}
+
+header h1{
+font-size:24px;
+}
+
+.toggle{
+cursor:pointer;
+font-size:22px;
+}
+
+/* SLIDER */
+
+.slider{
+display:flex;
+overflow-x:auto;
+gap:20px;
+padding:20px;
+}
+
+.slide{
+min-width:250px;
+background:white;
+color:black;
+border-radius:15px;
+overflow:hidden;
+}
+
+.slide img{
+width:100%;
+height:150px;
+object-fit:cover;
+}
+
+/* BOOK GRID */
+
+.container{
+display:grid;
+grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
+gap:25px;
+padding:30px;
+}
+
+/* 3D CARD */
+
+.card{
+background:rgba(255,255,255,0.15);
+backdrop-filter:blur(10px);
+border-radius:15px;
+padding:15px;
+transition:0.4s;
+transform-style:preserve-3d;
+}
+
+.card:hover{
+transform:rotateY(10deg) rotateX(10deg) scale(1.05);
+}
+
+.card img{
+width:100%;
+height:160px;
+border-radius:10px;
+object-fit:cover;
+}
+
+.title{
+margin-top:10px;
+font-size:18px;
+}
+
+/* BUTTONS */
+
+.actions{
+display:flex;
+justify-content:space-between;
+margin-top:10px;
+}
+
+button{
+border:none;
+padding:8px 12px;
+border-radius:6px;
+cursor:pointer;
+}
+
+.borrow{
+background:#00c9a7;
+color:white;
+}
+
+.favorite{
+background:#ff4d6d;
+color:white;
+}
+
+/* RATING */
+
+.star{
+color:gold;
+cursor:pointer;
+}
+
+/* MODAL */
+
+.modal{
+position:fixed;
+top:0;
+left:0;
+width:100%;
+height:100%;
+background:rgba(0,0,0,0.7);
+display:none;
+justify-content:center;
+align-items:center;
+}
+
+.modal-content{
+background:white;
+color:black;
+padding:30px;
+border-radius:15px;
+max-width:400px;
+text-align:center;
+}
+
+.close{
+cursor:pointer;
+float:right;
+font-size:20px;
+}
+
+.history{
+padding:20px;
+}
+
+</style>
+</head>
+
+<body>
+
+<div class="bg">
+<span style="left:10%"></span>
+<span style="left:30%"></span>
+<span style="left:50%"></span>
+<span style="left:70%"></span>
+<span style="left:90%"></span>
+</div>
+
+<header>
+
+<h1><i class="fa-solid fa-book"></i> Book Bank</h1>
+
+<div class="toggle" onclick="toggleMode()">
+<i class="fa-solid fa-moon"></i>
+</div>
+
+</header>
+
+<!-- BOOK SLIDER -->
+
+<div class="slider">
+
+<div class="slide">
+<img src="https://images.unsplash.com/photo-1512820790803-83ca734da794">
+</div>
+
+<div class="slide">
+<img src="https://images.unsplash.com/photo-1524995997946-a1c2e315a42f">
+</div>
+
+<div class="slide">
+<img src="https://images.unsplash.com/photo-1516979187457-637abb4f9353">
+</div>
+
+</div>
+
+<!-- BOOK GRID -->
+
+<div class="container" id="books"></div>
+
+<div class="history">
+<h2>📚 Borrow History</h2>
+<ul id="history"></ul>
+</div>
+
+<!-- MODAL -->
+
+<div class="modal" id="modal">
+
+<div class="modal-content">
+
+<span class="close" onclick="closeModal()">✖</span>
+
+<h2 id="modalTitle"></h2>
+
+<p>This is a great programming book for developers.</p>
+
+</div>
+
+</div>
+
+<script>
+
+const books=[
+{name:"Python Programming",img:"https://images.unsplash.com/photo-1512820790803-83ca734da794"},
+{name:"JavaScript Guide",img:"https://images.unsplash.com/photo-1524995997946-a1c2e315a42f"},
+{name:"Machine Learning",img:"https://images.unsplash.com/photo-1495446815901-a7297e633e8d"},
+{name:"Data Science",img:"https://images.unsplash.com/photo-1516979187457-637abb4f9353"},
+{name:"Django Backend",img:"https://images.unsplash.com/photo-1532012197267-da84d127e765"}
+]
+
+const container=document.getElementById("books")
+
+function loadBooks(){
+
+books.forEach(book=>{
+
+const card=document.createElement("div")
+
+card.className="card"
+
+card.innerHTML=`
+
+<img src="${book.img}">
+
+<div class="title">${book.name}</div>
+
+<div>
+
+<span class="star">★</span>
+<span class="star">★</span>
+<span class="star">★</span>
+<span class="star">★</span>
+<span class="star">★</span>
+
+</div>
+
+<div class="actions">
+
+<button class="borrow">
+<i class="fa-solid fa-book-open"></i>
+</button>
+
+<button class="favorite">
+<i class="fa-solid fa-heart"></i>
+</button>
+
+<button onclick="openModal('${book.name}')">
+<i class="fa-solid fa-info"></i>
+</button>
+
+</div>
+
+`
+
+container.appendChild(card)
+
+card.querySelector(".borrow").onclick=()=>borrow(book.name)
+
+})
+
+}
+
+function borrow(name){
+
+let history=JSON.parse(localStorage.getItem("history"))||[]
+
+history.push(name)
+
+localStorage.setItem("history",JSON.stringify(history))
+
+loadHistory()
+
+}
+
+function loadHistory(){
+
+let history=JSON.parse(localStorage.getItem("history"))||[]
+
+const list=document.getElementById("history")
+
+list.innerHTML=""
+
+history.forEach(b=>{
+
+const li=document.createElement("li")
+li.textContent=b
+list.appendChild(li)
+
+})
+
+}
+
+function toggleMode(){
+
+document.body.classList.toggle("dark")
+
+}
+
+function openModal(name){
+
+document.getElementById("modalTitle").innerText=name
+
+document.getElementById("modal").style.display="flex"
+
+}
+
+function closeModal(){
+
+document.getElementById("modal").style.display="none"
+
+}
+
+loadBooks()<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Ultra Book Bank</title>
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+
+<style>
+
+*{
+margin:0;
+padding:0;
+box-sizing:border-box;
+font-family:Arial;
+}
+
+body{
+background:linear-gradient(135deg,#667eea,#764ba2);
+color:white;
+min-height:100vh;
+overflow-x:hidden;
+transition:0.4s;
+}
+
+/* DARK MODE */
+
+body.dark{
+background:#111;
+color:white;
+}
+
+/* FLOATING BACKGROUND */
+
+.bg span{
+position:absolute;
+width:20px;
+height:20px;
+background:white;
+opacity:0.2;
+border-radius:50%;
+animation:float 10s linear infinite;
+}
+
+@keyframes float{
+0%{transform:translateY(100vh)}
+100%{transform:translateY(-100vh)}
+}
+
+/* HEADER */
+
+header{
+display:flex;
+justify-content:space-between;
+align-items:center;
+padding:20px;
+}
+
+header h1{
+font-size:24px;
+}
+
+.toggle{
+cursor:pointer;
+font-size:22px;
+}
+
+/* SLIDER */
+
+.slider{
+display:flex;
+overflow-x:auto;
+gap:20px;
+padding:20px;
+}
+
+.slide{
+min-width:250px;
+background:white;
+color:black;
+border-radius:15px;
+overflow:hidden;
+}
+
+.slide img{
+width:100%;
+height:150px;
+object-fit:cover;
+}
+
+/* BOOK GRID */
+
+.container{
+display:grid;
+grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
+gap:25px;
+padding:30px;
+}
+
+/* 3D CARD */
+
+.card{
+background:rgba(255,255,255,0.15);
+backdrop-filter:blur(10px);
+border-radius:15px;
+padding:15px;
+transition:0.4s;
+transform-style:preserve-3d;
+}
+
+.card:hover{
+transform:rotateY(10deg) rotateX(10deg) scale(1.05);
+}
+
+.card img{
+width:100%;
+height:160px;
+border-radius:10px;
+object-fit:cover;
+}
+
+.title{
+margin-top:10px;
+font-size:18px;
+}
+
+/* BUTTONS */
+
+.actions{
+display:flex;
+justify-content:space-between;
+margin-top:10px;
+}
+
+button{
+border:none;
+padding:8px 12px;
+border-radius:6px;
+cursor:pointer;
+}
+
+.borrow{
+background:#00c9a7;
+color:white;
+}
+
+.favorite{
+background:#ff4d6d;
+color:white;
+}
+
+/* RATING */
+
+.star{
+color:gold;
+cursor:pointer;
+}
+
+/* MODAL */
+
+.modal{
+position:fixed;
+top:0;
+left:0;
+width:100%;
+height:100%;
+background:rgba(0,0,0,0.7);
+display:none;
+justify-content:center;
+align-items:center;
+}
+
+.modal-content{
+background:white;
+color:black;
+padding:30px;
+border-radius:15px;
+max-width:400px;
+text-align:center;
+}
+
+.close{
+cursor:pointer;
+float:right;
+font-size:20px;
+}
+
+.history{
+padding:20px;
+}
+
+</style>
+</head>
+
+<body>
+
+<div class="bg">
+<span style="left:10%"></span>
+<span style="left:30%"></span>
+<span style="left:50%"></span>
+<span style="left:70%"></span>
+<span style="left:90%"></span>
+</div>
+
+<header>
+
+<h1><i class="fa-solid fa-book"></i> Book Bank</h1>
+
+<div class="toggle" onclick="toggleMode()">
+<i class="fa-solid fa-moon"></i>
+</div>
+
+</header>
+
+<!-- BOOK SLIDER -->
+
+<div class="slider">
+
+<div class="slide">
+<img src="https://images.unsplash.com/photo-1512820790803-83ca734da794">
+</div>
+
+<div class="slide">
+<img src="https://images.unsplash.com/photo-1524995997946-a1c2e315a42f">
+</div>
+
+<div class="slide">
+<img src="https://images.unsplash.com/photo-1516979187457-637abb4f9353">
+</div>
+
+</div>
+
+<!-- BOOK GRID -->
+
+<div class="container" id="books"></div>
+
+<div class="history">
+<h2>📚 Borrow History</h2>
+<ul id="history"></ul>
+</div>
+
+<!-- MODAL -->
+
+<div class="modal" id="modal">
+
+<div class="modal-content">
+
+<span class="close" onclick="closeModal()">✖</span>
+
+<h2 id="modalTitle"></h2>
+
+<p>This is a great programming book for developers.</p>
+
+</div>
+
+</div>
+
+<script>
+
+const books=[
+{name:"Python Programming",img:"https://images.unsplash.com/photo-1512820790803-83ca734da794"},
+{name:"JavaScript Guide",img:"https://images.unsplash.com/photo-1524995997946-a1c2e315a42f"},
+{name:"Machine Learning",img:"https://images.unsplash.com/photo-1495446815901-a7297e633e8d"},
+{name:"Data Science",img:"https://images.unsplash.com/photo-1516979187457-637abb4f9353"},
+{name:"Django Backend",img:"https://images.unsplash.com/photo-1532012197267-da84d127e765"}
+]
+
+const container=document.getElementById("books")
+
+function loadBooks(){
+
+books.forEach(book=>{
+
+const card=document.createElement("div")
+
+card.className="card"
+
+card.innerHTML=`
+
+<img src="${book.img}">
+
+<div class="title">${book.name}</div>
+
+<div>
+
+<span class="star">★</span>
+<span class="star">★</span>
+<span class="star">★</span>
+<span class="star">★</span>
+<span class="star">★</span>
+
+</div>
+
+<div class="actions">
+
+<button class="borrow">
+<i class="fa-solid fa-book-open"></i>
+</button>
+
+<button class="favorite">
+<i class="fa-solid fa-heart"></i>
+</button>
+
+<button onclick="openModal('${book.name}')">
+<i class="fa-solid fa-info"></i>
+</button>
+
+</div>
+
+`
+
+container.appendChild(card)
+
+card.querySelector(".borrow").onclick=()=>borrow(book.name)
+
+})
+
+}
+
+function borrow(name){
+
+let history=JSON.parse(localStorage.getItem("history"))||[]
+
+history.push(name)
+
+localStorage.setItem("history",JSON.stringify(history))
+
+loadHistory()
+
+}
+
+function loadHistory(){
+
+let history=JSON.parse(localStorage.getItem("history"))||[]
+
+const list=document.getElementById("history")
+
+list.innerHTML=""
+
+history.forEach(b=>{
+
+const li=document.createElement("li")
+li.textContent=b
+list.appendChild(li)
+
+})
+
+}
+
+function toggleMode(){
+
+document.body.classList.toggle("dark")
+
+}
+
+function openModal(name){
+
+document.getElementById("modalTitle").innerText=name
+
+document.getElementById("modal").style.display="flex"
+
+}
+
+function closeModal(){
+
+document.getElementById("modal").style.display="none"
+
+}
+
+loadBooks()
+loadHistory()
+
+</script>
+
+</body>
+</html>
+loadHistory()
+
+</script>
+
+</body>
+</html>
