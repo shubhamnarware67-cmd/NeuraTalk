@@ -1,0 +1,255 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Netflix Clone</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <!-- ===================== CSS ===================== -->
+    <style>
+        /* Reset & Base Styles */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background-color: #141414;
+            color: #ffffff;
+            font-family: Arial, Helvetica, sans-serif;
+            overflow-x: hidden;
+        }
+
+        a {
+            text-decoration: none;
+            color: white;
+        }
+
+        /* ===================== NAVBAR ===================== */
+        .navbar {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            height: 60px;
+            display: flex;
+            align-items: center;
+            padding: 0 50px;
+            background: linear-gradient(to bottom, rgba(0,0,0,0.8), rgba(0,0,0,0));
+            z-index: 1000;
+        }
+
+        .logo {
+            color: #e50914;
+            font-size: 28px;
+            font-weight: bold;
+            margin-right: 40px;
+        }
+
+        .nav-links a {
+            margin-right: 20px;
+            font-size: 14px;
+            opacity: 0.9;
+        }
+
+        .nav-links a:hover {
+            opacity: 1;
+        }
+
+        /* ===================== HERO BANNER ===================== */
+        .banner {
+            height: 90vh;
+            background-image: url("https://images.unsplash.com/photo-1606112219348-204d7d8b94ee");
+            background-size: cover;
+            background-position: center;
+            position: relative;
+            padding: 140px 50px;
+        }
+
+        .banner::after {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(to top, #141414 10%, transparent 60%);
+        }
+
+        .banner-content {
+            position: relative;
+            max-width: 600px;
+        }
+
+        .banner-title {
+            font-size: 48px;
+            font-weight: bold;
+            margin-bottom: 20px;
+        }
+
+        .banner-description {
+            font-size: 16px;
+            line-height: 1.5;
+            margin-bottom: 30px;
+            opacity: 0.9;
+        }
+
+        .banner-buttons button {
+            padding: 10px 25px;
+            border: none;
+            margin-right: 15px;
+            font-size: 16px;
+            cursor: pointer;
+            border-radius: 4px;
+        }
+
+        .btn-play {
+            background-color: white;
+            color: black;
+        }
+
+        .btn-info {
+            background-color: rgba(109, 109, 110, 0.7);
+            color: white;
+        }
+
+        .btn-play:hover,
+        .btn-info:hover {
+            opacity: 0.8;
+        }
+
+        /* ===================== MOVIE ROWS ===================== */
+        .row {
+            margin-top: 30px;
+            padding-left: 50px;
+        }
+
+        .row h2 {
+            margin-bottom: 15px;
+        }
+
+        .row-posters {
+            display: flex;
+            overflow-x: auto;
+            padding-bottom: 20px;
+        }
+
+        .row-posters::-webkit-scrollbar {
+            display: none;
+        }
+
+        .poster {
+            max-height: 180px;
+            margin-right: 10px;
+            transition: transform 0.3s ease;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+
+        .poster.large {
+            max-height: 250px;
+        }
+
+        .poster:hover {
+            transform: scale(1.15);
+            z-index: 10;
+        }
+
+        /* ===================== RESPONSIVE ===================== */
+        @media (max-width: 768px) {
+            .navbar {
+                padding: 0 20px;
+            }
+
+            .banner {
+                padding: 120px 20px;
+            }
+
+            .banner-title {
+                font-size: 32px;
+            }
+
+            .row {
+                padding-left: 20px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- ===================== NAVBAR ===================== -->
+    <div class="navbar">
+        <div class="logo">NETFLIX</div>
+        <div class="nav-links">
+            <a href="#">Home</a>
+            <a href="#">TV Shows</a>
+            <a href="#">Movies</a>
+            <a href="#">My List</a>
+        </div>
+    </div>
+
+    <!-- ===================== HERO SECTION ===================== -->
+    <header class="banner">
+        <div class="banner-content">
+            <h1 class="banner-title">Stranger Things</h1>
+            <p class="banner-description">
+                When a young boy vanishes, a small town uncovers a mystery involving secret experiments,
+                terrifying supernatural forces, and one strange little girl.
+            </p>
+            <div class="banner-buttons">
+                <button class="btn-play">▶ Play</button>
+                <button class="btn-info">ℹ More Info</button>
+            </div>
+        </div>
+    </header>
+
+    <!-- ===================== MOVIE ROWS ===================== -->
+    <section class="row">
+        <h2>Trending Now</h2>
+        <div class="row-posters">
+            <img class="poster" src="https://image.tmdb.org/t/p/w500/xGuOF1T3WmPsAcQEQJfnG7Ud9f8.jpg">
+            <img class="poster" src="https://image.tmdb.org/t/p/w500/9Gtg2DzBhmYamXBS1hKAhiwbBKS.jpg">
+            <img class="poster" src="https://image.tmdb.org/t/p/w500/qAZ0pzat24kLdO3o8ejmbLxyOac.jpg">
+            <img class="poster" src="https://image.tmdb.org/t/p/w500/34nDCQZwaEvsy4CFO5hkGRFDCVU.jpg">
+            <img class="poster" src="https://image.tmdb.org/t/p/w500/uKvVjHNqB5VmOrdxqAt2F7J78ED.jpg">
+        </div>
+    </section>
+
+    <section class="row">
+        <h2>Top Rated</h2>
+        <div class="row-posters">
+            <img class="poster" src="https://image.tmdb.org/t/p/w500/7IiTTgloJzvGI1TAYymCfbfl3vT.jpg">
+            <img class="poster" src="https://image.tmdb.org/t/p/w500/kqjL17yufvn9OVLyXYpvtyrFfak.jpg">
+            <img class="poster" src="https://image.tmdb.org/t/p/w500/6ELJEzQJ3Y45HczvreC3dg0GV5R.jpg">
+            <img class="poster" src="https://image.tmdb.org/t/p/w500/9O7gLzmreU0nGkIB6K3BsJbzvNv.jpg">
+        </div>
+    </section>
+
+    <section class="row">
+        <h2>Netflix Originals</h2>
+        <div class="row-posters">
+            <img class="poster large" src="https://image.tmdb.org/t/p/w500/5hNcsnMkwU2LknLoru73c76el3z.jpg">
+            <img class="poster large" src="https://image.tmdb.org/t/p/w500/y95lQLnuNKdPAzw9F9Ab8kJ80c3.jpg">
+            <img class="poster large" src="https://image.tmdb.org/t/p/w500/o7qi2v4uWQ8bZ1tW3KI0Ztn2epk.jpg">
+            <img class="poster large" src="https://image.tmdb.org/t/p/w500/4X4sjB6iJfKzYg4yQj2sHg4vG0R.jpg">
+        </div>
+    </section>
+
+    <!-- ===================== JAVASCRIPT ===================== -->
+    <script>
+        // Minimal JS for future enhancements
+        // (Example: Navbar background on scroll)
+
+        window.addEventListener("scroll", () => {
+            const navbar = document.querySelector(".navbar");
+            if (window.scrollY > 100) {
+                navbar.style.backgroundColor = "#141414";
+            } else {
+                navbar.style.backgroundColor = "transparent";
+            }
+        });
+    </script>
+
+</body>
+</html>
