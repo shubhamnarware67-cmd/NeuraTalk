@@ -1,0 +1,1023 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Rapidgo — Rides at Lightning Speed</title>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --yellow: #FFD600;
+    --yellow-dark: #F5C800;
+    --black: #0A0A0A;
+    --dark: #111111;
+    --dark2: #1A1A1A;
+    --dark3: #242424;
+    --gray: #888;
+    --light: #F5F5F0;
+    --white: #FFFFFF;
+    --red: #FF3B30;
+    --green: #00C853;
+  }
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: 'DM Sans', sans-serif;
+    background: var(--black);
+    color: var(--white);
+    overflow-x: hidden;
+  }
+
+  /* NAV */
+  nav {
+    position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 20px 48px;
+    background: rgba(10,10,10,0.85);
+    backdrop-filter: blur(16px);
+    border-bottom: 1px solid rgba(255,214,0,0.08);
+  }
+
+  .logo {
+    font-family: 'Syne', sans-serif;
+    font-weight: 800;
+    font-size: 24px;
+    letter-spacing: -0.5px;
+    color: var(--yellow);
+  }
+  .logo span { color: var(--white); }
+
+  .nav-links { display: flex; gap: 36px; list-style: none; }
+  .nav-links a {
+    font-size: 14px; font-weight: 500;
+    color: rgba(255,255,255,0.6);
+    text-decoration: none;
+    transition: color 0.2s;
+    letter-spacing: 0.3px;
+  }
+  .nav-links a:hover { color: var(--yellow); }
+
+  .nav-cta {
+    display: flex; gap: 12px; align-items: center;
+  }
+  .btn-ghost {
+    padding: 10px 22px; border-radius: 100px;
+    border: 1px solid rgba(255,255,255,0.2);
+    color: var(--white); font-size: 14px; font-weight: 500;
+    cursor: pointer; background: transparent;
+    transition: all 0.2s; font-family: 'DM Sans', sans-serif;
+  }
+  .btn-ghost:hover { border-color: var(--yellow); color: var(--yellow); }
+  .btn-primary {
+    padding: 10px 22px; border-radius: 100px;
+    background: var(--yellow); color: var(--black);
+    font-size: 14px; font-weight: 700;
+    cursor: pointer; border: none;
+    transition: all 0.2s; font-family: 'DM Sans', sans-serif;
+  }
+  .btn-primary:hover { background: var(--yellow-dark); transform: scale(1.03); }
+
+  /* HERO */
+  .hero {
+    min-height: 100vh;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    align-items: center;
+    padding: 0 48px;
+    padding-top: 80px;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .hero::before {
+    content: '';
+    position: absolute;
+    width: 600px; height: 600px;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(255,214,0,0.12) 0%, transparent 70%);
+    right: -100px; top: 50%; transform: translateY(-50%);
+    pointer-events: none;
+  }
+
+  .hero-left { max-width: 560px; }
+
+  .hero-badge {
+    display: inline-flex; align-items: center; gap: 8px;
+    padding: 8px 16px; border-radius: 100px;
+    background: rgba(255,214,0,0.1);
+    border: 1px solid rgba(255,214,0,0.25);
+    font-size: 12px; font-weight: 500; color: var(--yellow);
+    margin-bottom: 28px;
+    animation: fadeUp 0.6s ease both;
+  }
+
+  .hero-badge::before {
+    content: ''; width: 6px; height: 6px;
+    border-radius: 50%; background: var(--yellow);
+    animation: pulse 1.5s infinite;
+  }
+
+  @keyframes pulse {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.3; }
+  }
+
+  .hero h1 {
+    font-family: 'Syne', sans-serif;
+    font-size: clamp(48px, 5.5vw, 80px);
+    font-weight: 800;
+    line-height: 1.0;
+    letter-spacing: -2px;
+    color: var(--white);
+    animation: fadeUp 0.7s ease 0.1s both;
+  }
+
+  .hero h1 em {
+    font-style: normal;
+    color: var(--yellow);
+  }
+
+  .hero-sub {
+    margin-top: 20px;
+    font-size: 17px;
+    line-height: 1.6;
+    color: rgba(255,255,255,0.55);
+    max-width: 420px;
+    animation: fadeUp 0.7s ease 0.2s both;
+  }
+
+  /* BOOKING BOX */
+  .booking-box {
+    margin-top: 40px;
+    background: var(--dark2);
+    border: 1px solid rgba(255,255,255,0.08);
+    border-radius: 20px;
+    padding: 28px;
+    animation: fadeUp 0.7s ease 0.3s both;
+  }
+
+  .booking-tabs {
+    display: flex; gap: 4px;
+    background: var(--dark3);
+    border-radius: 100px;
+    padding: 4px;
+    margin-bottom: 24px;
+  }
+
+  .tab {
+    flex: 1; padding: 10px 16px; border-radius: 100px;
+    text-align: center; font-size: 13px; font-weight: 600;
+    cursor: pointer; transition: all 0.2s;
+    color: rgba(255,255,255,0.4);
+    display: flex; align-items: center; justify-content: center; gap: 6px;
+  }
+  .tab.active { background: var(--yellow); color: var(--black); }
+  .tab:not(.active):hover { color: var(--white); }
+
+  .tab-icon { font-size: 15px; }
+
+  .input-group { display: flex; flex-direction: column; gap: 10px; margin-bottom: 16px; }
+
+  .input-wrap {
+    display: flex; align-items: center; gap: 12px;
+    background: var(--dark3); border-radius: 12px;
+    padding: 14px 16px;
+    border: 1px solid transparent;
+    transition: border 0.2s;
+  }
+  .input-wrap:focus-within { border-color: var(--yellow); }
+
+  .input-dot {
+    width: 10px; height: 10px; border-radius: 50%; flex-shrink: 0;
+  }
+  .dot-green { background: var(--green); }
+  .dot-red { background: var(--red); }
+
+  .input-wrap input {
+    flex: 1; background: transparent; border: none; outline: none;
+    color: var(--white); font-size: 14px;
+    font-family: 'DM Sans', sans-serif;
+  }
+  .input-wrap input::placeholder { color: rgba(255,255,255,0.3); }
+
+  .input-divider {
+    height: 1px; background: rgba(255,255,255,0.05);
+    margin: 0 16px; position: relative;
+  }
+  .input-divider::after {
+    content: '⇅';
+    position: absolute; right: -8px; top: 50%;
+    transform: translateY(-50%);
+    background: var(--dark3); color: var(--yellow);
+    font-size: 12px; width: 24px; height: 24px;
+    border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    cursor: pointer;
+  }
+
+  .book-btn {
+    width: 100%; padding: 16px;
+    background: var(--yellow); color: var(--black);
+    font-size: 16px; font-weight: 700;
+    border: none; border-radius: 12px;
+    cursor: pointer; font-family: 'Syne', sans-serif;
+    letter-spacing: 0.3px;
+    transition: all 0.2s;
+  }
+  .book-btn:hover { background: var(--yellow-dark); transform: translateY(-1px); box-shadow: 0 8px 24px rgba(255,214,0,0.3); }
+
+  /* STATS */
+  .stats-row {
+    display: flex; gap: 24px; margin-top: 28px;
+    animation: fadeUp 0.7s ease 0.4s both;
+  }
+  .stat { display: flex; flex-direction: column; gap: 2px; }
+  .stat-num {
+    font-family: 'Syne', sans-serif;
+    font-size: 26px; font-weight: 800;
+    color: var(--yellow);
+  }
+  .stat-label { font-size: 12px; color: rgba(255,255,255,0.4); }
+  .stat-divider { width: 1px; background: rgba(255,255,255,0.1); }
+
+  /* HERO RIGHT - MAP VISUAL */
+  .hero-right {
+    display: flex; justify-content: center; align-items: center;
+    position: relative;
+    animation: fadeIn 1s ease 0.5s both;
+  }
+
+  .map-card {
+    width: 360px; height: 460px;
+    background: var(--dark2);
+    border-radius: 28px;
+    border: 1px solid rgba(255,255,255,0.08);
+    overflow: hidden;
+    position: relative;
+    box-shadow: 0 40px 80px rgba(0,0,0,0.6);
+  }
+
+  .map-bg {
+    position: absolute; inset: 0;
+    background:
+      linear-gradient(rgba(10,10,10,0.1), rgba(10,10,10,0.3)),
+      repeating-linear-gradient(0deg, transparent, transparent 39px, rgba(255,255,255,0.03) 39px, rgba(255,255,255,0.03) 40px),
+      repeating-linear-gradient(90deg, transparent, transparent 39px, rgba(255,255,255,0.03) 39px, rgba(255,255,255,0.03) 40px);
+    background-color: var(--dark3);
+  }
+
+  .map-route {
+    position: absolute;
+    inset: 0;
+  }
+
+  .rider-dot {
+    position: absolute;
+    width: 48px; height: 48px;
+    border-radius: 50%;
+    background: var(--yellow);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 22px;
+    box-shadow: 0 0 0 8px rgba(255,214,0,0.15), 0 0 0 16px rgba(255,214,0,0.05);
+    top: 45%; left: 50%; transform: translate(-50%, -50%);
+    animation: float 3s ease-in-out infinite;
+    z-index: 3;
+  }
+
+  @keyframes float {
+    0%, 100% { transform: translate(-50%, -50%) translateY(0); }
+    50% { transform: translate(-50%, -50%) translateY(-8px); }
+  }
+
+  .pin {
+    position: absolute;
+    display: flex; flex-direction: column; align-items: center;
+    z-index: 3;
+  }
+
+  .pin-dot {
+    width: 16px; height: 16px; border-radius: 50%;
+    border: 3px solid var(--black);
+  }
+
+  .pin-line { width: 2px; height: 12px; }
+
+  .pin-label {
+    font-size: 11px; font-weight: 600;
+    padding: 4px 10px; border-radius: 100px;
+    white-space: nowrap;
+    margin-top: 4px;
+  }
+
+  .pin-start { top: 20%; left: 22%; }
+  .pin-start .pin-dot { background: var(--green); }
+  .pin-start .pin-line { background: var(--green); }
+  .pin-start .pin-label { background: rgba(0,200,83,0.15); color: var(--green); border: 1px solid rgba(0,200,83,0.3); }
+
+  .pin-end { bottom: 20%; right: 18%; }
+  .pin-end .pin-dot { background: var(--red); }
+  .pin-end .pin-line { background: var(--red); }
+  .pin-end .pin-label { background: rgba(255,59,48,0.15); color: var(--red); border: 1px solid rgba(255,59,48,0.3); }
+
+  .map-info {
+    position: absolute; bottom: 0; left: 0; right: 0;
+    background: linear-gradient(transparent, rgba(10,10,10,0.95) 30%);
+    padding: 40px 20px 20px;
+  }
+
+  .map-info-card {
+    background: var(--dark3);
+    border-radius: 16px;
+    padding: 16px;
+    border: 1px solid rgba(255,255,255,0.08);
+    display: flex; justify-content: space-between; align-items: center;
+  }
+
+  .driver-info { display: flex; gap: 12px; align-items: center; }
+
+  .driver-avatar {
+    width: 40px; height: 40px; border-radius: 50%;
+    background: linear-gradient(135deg, #FFD600 0%, #FF8C00 100%);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 18px;
+  }
+
+  .driver-name { font-size: 13px; font-weight: 600; }
+  .driver-sub { font-size: 11px; color: var(--gray); margin-top: 2px; display: flex; align-items: center; gap: 4px; }
+  .star { color: var(--yellow); }
+
+  .eta-badge {
+    text-align: right;
+  }
+  .eta-num {
+    font-family: 'Syne', sans-serif;
+    font-size: 22px; font-weight: 800; color: var(--yellow);
+  }
+  .eta-label { font-size: 11px; color: var(--gray); }
+
+  /* SVG Route */
+  .route-svg {
+    position: absolute; inset: 0; width: 100%; height: 100%;
+  }
+
+  /* SERVICES SECTION */
+  .section {
+    padding: 100px 48px;
+  }
+
+  .section-tag {
+    font-size: 12px; font-weight: 600; letter-spacing: 2px;
+    color: var(--yellow); text-transform: uppercase;
+    margin-bottom: 12px;
+  }
+
+  .section-title {
+    font-family: 'Syne', sans-serif;
+    font-size: clamp(32px, 4vw, 52px);
+    font-weight: 800; line-height: 1.1;
+    letter-spacing: -1.5px;
+    max-width: 480px;
+  }
+
+  .section-header {
+    display: flex; justify-content: space-between; align-items: flex-end;
+    margin-bottom: 48px;
+  }
+
+  .services-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 16px;
+  }
+
+  .service-card {
+    background: var(--dark2);
+    border: 1px solid rgba(255,255,255,0.06);
+    border-radius: 20px;
+    padding: 28px 24px;
+    cursor: pointer;
+    transition: all 0.3s;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .service-card::before {
+    content: '';
+    position: absolute; inset: 0;
+    background: radial-gradient(circle at 30% 30%, rgba(255,214,0,0.05) 0%, transparent 60%);
+    opacity: 0; transition: opacity 0.3s;
+  }
+
+  .service-card:hover { border-color: rgba(255,214,0,0.3); transform: translateY(-4px); }
+  .service-card:hover::before { opacity: 1; }
+
+  .service-card.featured {
+    background: var(--yellow);
+    border-color: var(--yellow);
+  }
+
+  .service-card.featured .service-icon { background: rgba(0,0,0,0.15); }
+  .service-card.featured .service-name { color: var(--black); }
+  .service-card.featured .service-desc { color: rgba(0,0,0,0.6); }
+  .service-card.featured .service-price { color: var(--black); }
+
+  .service-icon {
+    width: 52px; height: 52px; border-radius: 14px;
+    background: var(--dark3);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 24px;
+    margin-bottom: 20px;
+  }
+
+  .service-name {
+    font-family: 'Syne', sans-serif;
+    font-size: 18px; font-weight: 700;
+    margin-bottom: 6px;
+  }
+
+  .service-desc {
+    font-size: 13px; color: rgba(255,255,255,0.45);
+    line-height: 1.5; margin-bottom: 20px;
+  }
+
+  .service-price {
+    font-size: 13px; font-weight: 600;
+    color: var(--yellow);
+  }
+
+  .service-card.featured .service-price { color: rgba(0,0,0,0.7); }
+
+  /* HOW IT WORKS */
+  .how-section {
+    padding: 100px 48px;
+    background: var(--dark2);
+  }
+
+  .steps-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 32px;
+    margin-top: 60px;
+    position: relative;
+  }
+
+  .steps-grid::before {
+    content: '';
+    position: absolute;
+    top: 40px; left: calc(16.66% + 16px); right: calc(16.66% + 16px);
+    height: 1px;
+    background: linear-gradient(90deg, var(--yellow), rgba(255,214,0,0.3), var(--yellow));
+    z-index: 0;
+  }
+
+  .step {
+    text-align: center;
+    position: relative;
+  }
+
+  .step-num {
+    width: 80px; height: 80px; border-radius: 50%;
+    background: var(--yellow);
+    display: flex; align-items: center; justify-content: center;
+    margin: 0 auto 24px;
+    font-family: 'Syne', sans-serif;
+    font-size: 30px; font-weight: 800;
+    color: var(--black);
+    position: relative; z-index: 1;
+    box-shadow: 0 0 0 8px rgba(255,214,0,0.1), 0 0 0 16px rgba(255,214,0,0.05);
+  }
+
+  .step h3 {
+    font-family: 'Syne', sans-serif;
+    font-size: 20px; font-weight: 700;
+    margin-bottom: 10px;
+  }
+
+  .step p {
+    font-size: 14px; color: rgba(255,255,255,0.45);
+    line-height: 1.6; max-width: 240px; margin: 0 auto;
+  }
+
+  /* APP BANNER */
+  .app-section {
+    padding: 80px 48px;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 60px;
+    align-items: center;
+    background: linear-gradient(135deg, var(--dark2) 0%, var(--black) 100%);
+    margin: 0 48px;
+    border-radius: 32px;
+    border: 1px solid rgba(255,255,255,0.06);
+    position: relative; overflow: hidden;
+  }
+
+  .app-section::before {
+    content: '';
+    position: absolute;
+    width: 400px; height: 400px;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(255,214,0,0.08) 0%, transparent 70%);
+    right: -80px; top: 50%; transform: translateY(-50%);
+  }
+
+  .app-left h2 {
+    font-family: 'Syne', sans-serif;
+    font-size: clamp(28px, 3.5vw, 48px);
+    font-weight: 800; line-height: 1.1;
+    letter-spacing: -1.5px;
+    margin-bottom: 16px;
+  }
+
+  .app-left p {
+    color: rgba(255,255,255,0.5);
+    font-size: 15px; line-height: 1.6;
+    margin-bottom: 32px;
+  }
+
+  .app-buttons { display: flex; gap: 16px; }
+
+  .app-btn {
+    display: flex; align-items: center; gap: 12px;
+    padding: 14px 24px; border-radius: 14px;
+    background: var(--dark3);
+    border: 1px solid rgba(255,255,255,0.1);
+    cursor: pointer; transition: all 0.2s;
+    text-decoration: none;
+  }
+
+  .app-btn:hover { border-color: var(--yellow); transform: translateY(-2px); }
+
+  .app-btn-icon { font-size: 28px; }
+  .app-btn-text { display: flex; flex-direction: column; }
+  .app-btn-sub { font-size: 10px; color: var(--gray); text-transform: uppercase; letter-spacing: 0.5px; }
+  .app-btn-name { font-family: 'Syne', sans-serif; font-size: 16px; font-weight: 700; color: var(--white); }
+
+  /* PHONE MOCKUP */
+  .phone-mockup {
+    display: flex; justify-content: center; align-items: center;
+    position: relative;
+  }
+
+  .phone {
+    width: 220px; height: 440px;
+    background: var(--dark3);
+    border-radius: 40px;
+    border: 2px solid rgba(255,255,255,0.1);
+    overflow: hidden;
+    box-shadow: 0 40px 80px rgba(0,0,0,0.5), 0 0 0 1px rgba(255,255,255,0.05);
+    position: relative;
+  }
+
+  .phone-notch {
+    width: 100px; height: 28px;
+    background: var(--black);
+    border-radius: 0 0 20px 20px;
+    margin: 0 auto;
+    position: relative; z-index: 2;
+  }
+
+  .phone-screen {
+    position: absolute; inset: 0;
+    padding: 50px 16px 20px;
+    background: linear-gradient(180deg, var(--dark2) 0%, var(--dark3) 100%);
+  }
+
+  .phone-header {
+    font-family: 'Syne', sans-serif;
+    font-size: 14px; font-weight: 700;
+    margin-bottom: 16px;
+  }
+
+  .phone-map-placeholder {
+    height: 160px; border-radius: 16px;
+    background: var(--black);
+    border: 1px solid rgba(255,255,255,0.06);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 32px;
+    margin-bottom: 16px;
+    position: relative; overflow: hidden;
+  }
+
+  .phone-map-placeholder::after {
+    content: '';
+    position: absolute; inset: 0;
+    background:
+      repeating-linear-gradient(0deg, transparent, transparent 19px, rgba(255,255,255,0.02) 19px, rgba(255,255,255,0.02) 20px),
+      repeating-linear-gradient(90deg, transparent, transparent 19px, rgba(255,255,255,0.02) 19px, rgba(255,255,255,0.02) 20px);
+  }
+
+  .phone-options {
+    display: grid; grid-template-columns: 1fr 1fr;
+    gap: 8px; margin-bottom: 12px;
+  }
+
+  .phone-opt {
+    background: var(--dark2); border-radius: 10px;
+    padding: 10px; border: 1px solid rgba(255,255,255,0.06);
+    font-size: 10px; text-align: center;
+  }
+  .phone-opt-icon { font-size: 18px; margin-bottom: 4px; }
+  .phone-opt-name { font-weight: 600; display: block; }
+  .phone-opt-price { color: var(--yellow); display: block; font-size: 9px; margin-top: 2px; }
+
+  .phone-btn {
+    width: 100%; padding: 12px;
+    background: var(--yellow); color: var(--black);
+    border: none; border-radius: 12px;
+    font-family: 'Syne', sans-serif;
+    font-size: 13px; font-weight: 700;
+    cursor: pointer;
+  }
+
+  /* FOOTER */
+  footer {
+    padding: 60px 48px 32px;
+    border-top: 1px solid rgba(255,255,255,0.06);
+    margin-top: 80px;
+  }
+
+  .footer-top {
+    display: grid;
+    grid-template-columns: 2fr 1fr 1fr 1fr;
+    gap: 48px;
+    margin-bottom: 48px;
+  }
+
+  .footer-brand .logo { display: block; margin-bottom: 12px; }
+  .footer-brand p { font-size: 13px; color: rgba(255,255,255,0.4); line-height: 1.6; max-width: 260px; }
+
+  .footer-col h4 {
+    font-family: 'Syne', sans-serif;
+    font-size: 13px; font-weight: 700;
+    margin-bottom: 16px;
+    color: rgba(255,255,255,0.7);
+    text-transform: uppercase; letter-spacing: 1px;
+  }
+
+  .footer-col ul { list-style: none; display: flex; flex-direction: column; gap: 10px; }
+  .footer-col ul a {
+    font-size: 13px; color: rgba(255,255,255,0.4);
+    text-decoration: none; transition: color 0.2s;
+  }
+  .footer-col ul a:hover { color: var(--yellow); }
+
+  .footer-bottom {
+    display: flex; justify-content: space-between; align-items: center;
+    padding-top: 24px;
+    border-top: 1px solid rgba(255,255,255,0.06);
+    font-size: 12px; color: rgba(255,255,255,0.3);
+  }
+
+  .social-links { display: flex; gap: 16px; }
+  .social-link {
+    width: 36px; height: 36px; border-radius: 50%;
+    background: var(--dark2); border: 1px solid rgba(255,255,255,0.08);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 14px; cursor: pointer; transition: all 0.2s;
+  }
+  .social-link:hover { border-color: var(--yellow); transform: translateY(-2px); }
+
+  /* ANIMATIONS */
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  @keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+  }
+
+  /* ACTIVE TAB JS */
+  .booking-box { user-select: none; }
+
+  /* MODAL OVERLAY */
+  .modal {
+    display: none;
+    position: fixed; inset: 0; z-index: 200;
+    background: rgba(0,0,0,0.7);
+    backdrop-filter: blur(8px);
+    align-items: center; justify-content: center;
+  }
+  .modal.open { display: flex; }
+  .modal-card {
+    background: var(--dark2);
+    border: 1px solid rgba(255,255,255,0.1);
+    border-radius: 24px;
+    padding: 40px;
+    max-width: 400px; width: 90%;
+    text-align: center;
+  }
+  .modal-icon { font-size: 56px; margin-bottom: 16px; }
+  .modal-title { font-family: 'Syne', sans-serif; font-size: 24px; font-weight: 800; margin-bottom: 8px; }
+  .modal-sub { color: rgba(255,255,255,0.5); font-size: 14px; line-height: 1.5; margin-bottom: 28px; }
+  .modal-close {
+    padding: 14px 40px; border-radius: 100px;
+    background: var(--yellow); color: var(--black);
+    font-size: 15px; font-weight: 700;
+    border: none; cursor: pointer;
+    font-family: 'Syne', sans-serif;
+  }
+</style>
+</head>
+<body>
+
+<!-- MODAL -->
+<div class="modal" id="modal">
+  <div class="modal-card">
+    <div class="modal-icon">🛵</div>
+    <div class="modal-title">Finding your ride!</div>
+    <div class="modal-sub">Looking for nearby drivers in your area. You'll be matched in seconds.</div>
+    <button class="modal-close" onclick="document.getElementById('modal').classList.remove('open')">Got it</button>
+  </div>
+</div>
+
+<!-- NAV -->
+<nav>
+  <div class="logo">Rapid<span>go</span></div>
+  <ul class="nav-links">
+    <li><a href="#">Ride</a></li>
+    <li><a href="#">Drive</a></li>
+    <li><a href="#">Business</a></li>
+    <li><a href="#">Safety</a></li>
+  </ul>
+  <div class="nav-cta">
+    <button class="btn-ghost">Log in</button>
+    <button class="btn-primary">Get the app</button>
+  </div>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-left">
+    <div class="hero-badge">🟢 Now live in 100+ cities</div>
+    <h1>Your ride,<br>in <em>60 seconds.</em></h1>
+    <p class="hero-sub">Fast, affordable bike and auto rides. Book in seconds, track in real-time, arrive on time — every time.</p>
+
+    <!-- BOOKING BOX -->
+    <div class="booking-box">
+      <div class="booking-tabs">
+        <div class="tab active" onclick="setTab(this)"><span class="tab-icon">🛵</span> Bike</div>
+        <div class="tab" onclick="setTab(this)"><span class="tab-icon">🛺</span> Auto</div>
+        <div class="tab" onclick="setTab(this)"><span class="tab-icon">🚗</span> Cab</div>
+        <div class="tab" onclick="setTab(this)"><span class="tab-icon">📦</span> Parcel</div>
+      </div>
+      <div class="input-group">
+        <div class="input-wrap">
+          <div class="input-dot dot-green"></div>
+          <input type="text" placeholder="Pickup location" />
+        </div>
+        <div class="input-divider"></div>
+        <div class="input-wrap">
+          <div class="input-dot dot-red"></div>
+          <input type="text" placeholder="Drop location" />
+        </div>
+      </div>
+      <button class="book-btn" onclick="document.getElementById('modal').classList.add('open')">🔍 Search Rides</button>
+    </div>
+
+    <div class="stats-row">
+      <div class="stat">
+        <div class="stat-num">50M+</div>
+        <div class="stat-label">Happy riders</div>
+      </div>
+      <div class="stat-divider"></div>
+      <div class="stat">
+        <div class="stat-num">100+</div>
+        <div class="stat-label">Cities covered</div>
+      </div>
+      <div class="stat-divider"></div>
+      <div class="stat">
+        <div class="stat-num">₹20</div>
+        <div class="stat-label">Starting fare</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="hero-right">
+    <div class="map-card">
+      <div class="map-bg"></div>
+      <svg class="route-svg" viewBox="0 0 360 460" xmlns="http://www.w3.org/2000/svg">
+        <!-- Road lines -->
+        <line x1="0" y1="200" x2="360" y2="200" stroke="rgba(255,255,255,0.04)" stroke-width="20"/>
+        <line x1="180" y1="0" x2="180" y2="460" stroke="rgba(255,255,255,0.04)" stroke-width="20"/>
+        <line x1="0" y1="120" x2="360" y2="120" stroke="rgba(255,255,255,0.02)" stroke-width="12"/>
+        <line x1="90" y1="0" x2="90" y2="460" stroke="rgba(255,255,255,0.02)" stroke-width="12"/>
+        <line x1="270" y1="0" x2="270" y2="460" stroke="rgba(255,255,255,0.02)" stroke-width="12"/>
+        <!-- Route path -->
+        <path d="M 100 100 Q 120 200 180 210 Q 240 220 260 330" stroke="#FFD600" stroke-width="3" fill="none" stroke-dasharray="8 6" opacity="0.7"/>
+        <!-- Glow -->
+        <path d="M 100 100 Q 120 200 180 210 Q 240 220 260 330" stroke="#FFD600" stroke-width="8" fill="none" opacity="0.08"/>
+      </svg>
+
+      <div class="pin pin-start">
+        <div class="pin-dot"></div>
+        <div class="pin-line"></div>
+        <div class="pin-label">Pickup</div>
+      </div>
+
+      <div class="pin pin-end">
+        <div class="pin-dot"></div>
+        <div class="pin-line"></div>
+        <div class="pin-label">Drop</div>
+      </div>
+
+      <div class="rider-dot">🛵</div>
+
+      <div class="map-info">
+        <div class="map-info-card">
+          <div class="driver-info">
+            <div class="driver-avatar">🧑</div>
+            <div>
+              <div class="driver-name">Rahul S.</div>
+              <div class="driver-sub"><span class="star">★</span> 4.9 · KA 01 AB 2345</div>
+            </div>
+          </div>
+          <div class="eta-badge">
+            <div class="eta-num">3 min</div>
+            <div class="eta-label">away</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- SERVICES -->
+<section class="section">
+  <div class="section-header">
+    <div>
+      <div class="section-tag">Our Services</div>
+      <h2 class="section-title">Rides for<br>every need</h2>
+    </div>
+    <a href="#" style="color: var(--yellow); font-size: 14px; font-weight: 600; text-decoration: none;">View all →</a>
+  </div>
+  <div class="services-grid">
+    <div class="service-card featured">
+      <div class="service-icon">🛵</div>
+      <div class="service-name">Bike</div>
+      <div class="service-desc">Zip through traffic on a motorbike. Fastest and most affordable.</div>
+      <div class="service-price">From ₹20 · Most popular</div>
+    </div>
+    <div class="service-card">
+      <div class="service-icon">🛺</div>
+      <div class="service-name">Auto</div>
+      <div class="service-desc">Classic 3-wheeler rides for short city trips with comfort.</div>
+      <div class="service-price">From ₹40</div>
+    </div>
+    <div class="service-card">
+      <div class="service-icon">🚗</div>
+      <div class="service-name">Cab</div>
+      <div class="service-desc">AC car rides with professional drivers for longer journeys.</div>
+      <div class="service-price">From ₹80</div>
+    </div>
+    <div class="service-card">
+      <div class="service-icon">📦</div>
+      <div class="service-name">Parcel</div>
+      <div class="service-desc">Same-day delivery for packages and documents across the city.</div>
+      <div class="service-price">From ₹30</div>
+    </div>
+  </div>
+</section>
+
+<!-- HOW IT WORKS -->
+<section class="how-section">
+  <div style="text-align:center">
+    <div class="section-tag">How it works</div>
+    <h2 class="section-title" style="margin: 0 auto; text-align:center;">Three steps,<br>you're riding</h2>
+  </div>
+  <div class="steps-grid">
+    <div class="step">
+      <div class="step-num">1</div>
+      <h3>Set your location</h3>
+      <p>Enter your pickup and drop points. Our smart maps auto-suggest locations near you.</p>
+    </div>
+    <div class="step">
+      <div class="step-num">2</div>
+      <h3>Choose your ride</h3>
+      <p>Pick from Bike, Auto, or Cab. See prices upfront — no hidden charges, ever.</p>
+    </div>
+    <div class="step">
+      <div class="step-num">3</div>
+      <h3>Track & arrive</h3>
+      <p>Watch your driver live on the map. Share your trip with family for extra safety.</p>
+    </div>
+  </div>
+</section>
+
+<!-- APP SECTION -->
+<section style="padding: 80px 48px;">
+  <div class="app-section">
+    <div class="app-left">
+      <div class="section-tag">Get the app</div>
+      <h2>Rides at your<br>fingertips, <em style="font-style:normal;color:var(--yellow)">always.</em></h2>
+      <p>Download the Rapidgo app for instant booking, live tracking, ride history, and exclusive in-app discounts.</p>
+      <div class="app-buttons">
+        <a class="app-btn" href="#">
+          <div class="app-btn-icon">🍎</div>
+          <div class="app-btn-text">
+            <span class="app-btn-sub">Download on the</span>
+            <span class="app-btn-name">App Store</span>
+          </div>
+        </a>
+        <a class="app-btn" href="#">
+          <div class="app-btn-icon">▶️</div>
+          <div class="app-btn-text">
+            <span class="app-btn-sub">Get it on</span>
+            <span class="app-btn-name">Google Play</span>
+          </div>
+        </a>
+      </div>
+    </div>
+    <div class="phone-mockup">
+      <div class="phone">
+        <div class="phone-notch"></div>
+        <div class="phone-screen">
+          <div class="phone-header">🛵 Rapidgo</div>
+          <div class="phone-map-placeholder">🗺️</div>
+          <div class="phone-options">
+            <div class="phone-opt">
+              <div class="phone-opt-icon">🛵</div>
+              <span class="phone-opt-name">Bike</span>
+              <span class="phone-opt-price">₹20 · 2 min</span>
+            </div>
+            <div class="phone-opt" style="border-color:rgba(255,214,0,0.3)">
+              <div class="phone-opt-icon">🛺</div>
+              <span class="phone-opt-name">Auto</span>
+              <span class="phone-opt-price">₹45 · 4 min</span>
+            </div>
+            <div class="phone-opt">
+              <div class="phone-opt-icon">🚗</div>
+              <span class="phone-opt-name">Cab</span>
+              <span class="phone-opt-price">₹85 · 5 min</span>
+            </div>
+            <div class="phone-opt">
+              <div class="phone-opt-icon">📦</div>
+              <span class="phone-opt-name">Parcel</span>
+              <span class="phone-opt-price">₹30 · fast</span>
+            </div>
+          </div>
+          <button class="phone-btn">Book Now</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-top">
+    <div class="footer-brand">
+      <div class="logo">Rapid<span>go</span></div>
+      <p>Fast, safe, and affordable rides across India. Book in seconds, anywhere, anytime.</p>
+    </div>
+    <div class="footer-col">
+      <h4>Company</h4>
+      <ul>
+        <li><a href="#">About us</a></li>
+        <li><a href="#">Careers</a></li>
+        <li><a href="#">Blog</a></li>
+        <li><a href="#">Press</a></li>
+      </ul>
+    </div>
+    <div class="footer-col">
+      <h4>Services</h4>
+      <ul>
+        <li><a href="#">Bike rides</a></li>
+        <li><a href="#">Auto rides</a></li>
+        <li><a href="#">Cab rides</a></li>
+        <li><a href="#">Parcels</a></li>
+      </ul>
+    </div>
+    <div class="footer-col">
+      <h4>Support</h4>
+      <ul>
+        <li><a href="#">Help center</a></li>
+        <li><a href="#">Safety</a></li>
+        <li><a href="#">Community</a></li>
+        <li><a href="#">Drive with us</a></li>
+      </ul>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <span>© 2026 Rapidgo Technologies Pvt. Ltd. All rights reserved.</span>
+    <div class="social-links">
+      <div class="social-link">𝕏</div>
+      <div class="social-link">f</div>
+      <div class="social-link">in</div>
+      <div class="social-link">▶</div>
+    </div>
+  </div>
+</footer>
+
+<script>
+  function setTab(el) {
+    document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+    el.classList.add('active');
+  }
+</script>
+
+</body>
+</html>
