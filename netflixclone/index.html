@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Netflix Clone - Shubham Narware</title>
+<link rel="icon" href="assets/favicon.png" type="image/png">
+<link rel="stylesheet" href="style.css">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Roboto:wght@300;400;500;700;900&display=swap" rel="stylesheet">
+</head>
+<body>
+
+  <!-- ============ LOADER ============ -->
+  <div class="loader" id="loader">
+    <div class="loader-logo">NETFLIX<span>CLONE</span></div>
+  </div>
+
+  <!-- ============ NAVBAR ============ -->
+  <header class="navbar" id="navbar">
+    <div class="nav-left">
+      <a href="#" class="logo">NETFLIXCLONE</a>
+      <ul class="nav-links">
+        <li><a href="#home" class="active">Home</a></li>
+        <li><a href="#tv-shows">TV Shows</a></li>
+        <li><a href="#movies">Movies</a></li>
+        <li><a href="#new">New &amp; Popular</a></li>
+        <li><a href="#mylist">My List</a></li>
+      </ul>
+      <div class="nav-mobile-toggle" id="navMobileToggle">
+        <i class="fa-icon">☰</i>
+      </div>
+    </div>
+    <div class="nav-right">
+      <button class="icon-btn" id="searchBtn" aria-label="Search">🔍</button>
+      <input type="text" id="searchInput" class="search-input" placeholder="Titles, people, genres">
+      <button class="icon-btn" id="notifBtn" aria-label="Notifications">🔔
+        <span class="notif-dot"></span>
+      </button>
+      <div class="profile-menu" id="profileMenu">
+        <img src="https://api.dicebear.com/7.x/shapes/svg?seed=shubham&backgroundColor=e50914" alt="profile" class="profile-avatar" id="profileAvatar">
+        <span class="caret">▾</span>
+        <div class="profile-dropdown" id="profileDropdown">
+          <div class="dropdown-item"><img src="https://api.dicebear.com/7.x/shapes/svg?seed=shubham&backgroundColor=e50914" alt=""> Shubham Narware</div>
+          <div class="dropdown-item"><img src="https://api.dicebear.com/7.x/shapes/svg?seed=guest2&backgroundColor=2196f3" alt=""> Kids</div>
+          <hr>
+          <div class="dropdown-item link">Manage Profiles</div>
+          <div class="dropdown-item link">Account</div>
+          <div class="dropdown-item link">Help Center</div>
+          <hr>
+          <div class="dropdown-item link" id="signOutBtn">Sign out of Netflix</div>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <!-- Mobile Nav Drawer -->
+  <div class="mobile-drawer" id="mobileDrawer">
+    <ul>
+      <li><a href="#home">Home</a></li>
+      <li><a href="#tv-shows">TV Shows</a></li>
+      <li><a href="#movies">Movies</a></li>
+      <li><a href="#new">New &amp; Popular</a></li>
+      <li><a href="#mylist">My List</a></li>
+    </ul>
+  </div>
+
+  <!-- Search Results Overlay -->
+  <div class="search-overlay" id="searchOverlay">
+    <div class="search-results" id="searchResults"></div>
+  </div>
+
+  <!-- ============ HERO ============ -->
+  <section class="hero" id="home">
+    <div class="hero-bg" id="heroBg"></div>
+    <div class="hero-fade-bottom"></div>
+    <div class="hero-fade-left"></div>
+    <div class="hero-content">
+      <div class="hero-badge">N SERIES</div>
+      <h1 class="hero-title" id="heroTitle">Stranger Things</h1>
+      <p class="hero-meta">
+        <span class="match">98% Match</span>
+        <span>2024</span>
+        <span class="rated">16+</span>
+        <span>4 Seasons</span>
+        <span class="hd-badge">HD</span>
+      </p>
+      <p class="hero-desc" id="heroDesc">
+        When a young boy vanishes, a small town uncovers a mystery involving secret experiments,
+        terrifying supernatural forces and one strange little girl.
+      </p>
+      <div class="hero-buttons">
+        <button class="btn btn-play" onclick="playTrailer()"><span>▶</span> Play</button>
+        <button class="btn btn-info" onclick="openModalById('s1')"><span>ⓘ</span> More Info</button>
+        <button class="btn btn-icon-round" id="heroMuteBtn" onclick="toggleMute()">🔇</button>
+        <button class="btn btn-icon-round" id="heroListBtn" onclick="toggleMyList('s1', this)">＋</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ MAIN CONTENT ============ -->
+  <main class="main-content">
+    <div id="rowsContainer"></div>
+  </main>
+
+  <!-- ============ FOOTER ============ -->
+  <footer class="footer">
+    <div class="footer-social">
+      <a href="#" aria-label="Facebook">📘</a>
+      <a href="#" aria-label="Instagram">📷</a>
+      <a href="#" aria-label="Twitter">🐦</a>
+      <a href="#" aria-label="Youtube">▶️</a>
+    </div>
+    <div class="footer-links">
+      <a href="#">Audio Description</a>
+      <a href="#">Help Center</a>
+      <a href="#">Gift Cards</a>
+      <a href="#">Media Center</a>
+      <a href="#">Investor Relations</a>
+      <a href="#">Jobs</a>
+      <a href="#">Terms of Use</a>
+      <a href="#">Privacy</a>
+      <a href="#">Legal Notices</a>
+      <a href="#">Cookie Preferences</a>
+      <a href="#">Corporate Information</a>
+      <a href="#">Contact Us</a>
+    </div>
+    <button class="service-code">Service Code</button>
+    <p class="footer-credit">This is a fan-made frontend clone project built with HTML, CSS &amp; JS.<br>
+    Designed &amp; Developed by <strong>Shubham Narware</strong>.</p>
+  </footer>
+
+  <!-- ============ DETAILS MODAL ============ -->
+  <div class="modal-overlay" id="modalOverlay">
+    <div class="modal-box" id="modalBox">
+      <button class="modal-close" onclick="closeModal()">✕</button>
+      <div class="modal-media">
+        <img id="modalImage" src="" alt="">
+        <div class="modal-media-fade"></div>
+        <div class="modal-media-buttons">
+          <button class="btn btn-play" onclick="playTrailer()"><span>▶</span> Play</button>
+          <button class="btn btn-icon-round" id="modalListBtn">＋</button>
+          <button class="btn btn-icon-round like-btn" id="modalLikeBtn">👍</button>
+          <button class="btn btn-icon-round" id="modalMuteBtn" onclick="toggleMute()">🔇</button>
+        </div>
+      </div>
+      <div class="modal-info">
+        <div class="modal-info-left">
+          <div class="modal-meta">
+            <span class="match" id="modalMatch">97% Match</span>
+            <span id="modalYear">2024</span>
+            <span class="rated" id="modalRated">16+</span>
+            <span id="modalSeasons">3 Seasons</span>
+            <span class="hd-badge">HD</span>
+          </div>
+          <p class="modal-desc" id="modalDesc">Description goes here.</p>
+        </div>
+        <div class="modal-info-right">
+          <p><span class="label">Cast:</span> <span id="modalCast">-</span></p>
+          <p><span class="label">Genres:</span> <span id="modalGenres">-</span></p>
+          <p><span class="label">This show is:</span> <span id="modalTags">-</span></p>
+        </div>
+      </div>
+      <div class="modal-episodes" id="modalEpisodes"></div>
+    </div>
+  </div>
+
+  <!-- ============ TRAILER MODAL ============ -->
+  <div class="trailer-overlay" id="trailerOverlay">
+    <div class="trailer-box">
+      <button class="modal-close" onclick="closeTrailer()">✕</button>
+      <div class="trailer-player" id="trailerPlayer">
+        <div class="fake-player">
+          <div class="fake-player-bars">
+            <span></span><span></span><span></span><span></span><span></span>
+          </div>
+          <p>▶ Now Playing: <span id="trailerTitle">Trailer</span></p>
+          <small>(Demo player — this is a frontend-only clone, no real video stream)</small>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Toast -->
+  <div class="toast" id="toast"></div>
+
+  <script src="data.js"></script>
+  <script src="script.js"></script>
+</body>
+</html>
