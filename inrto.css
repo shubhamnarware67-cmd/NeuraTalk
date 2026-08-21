@@ -1,0 +1,408 @@
+:root {
+    --bg-1: #0b1220;
+    /* page background deep */
+    --card: rgba(14, 22, 36, 0.6);
+    --glass: rgba(255, 255, 255, 0.03);
+    --blue: #2b6df6;
+    /* primary blue */
+    --blue-2: #1c4ed8;
+    --muted: #9aa7bf;
+    --bubble-recv: rgba(255, 255, 255, 0.04);
+    --bubble-sent: linear-gradient(135deg, var(--blue), var(--blue-2));
+    --accent-shadow: rgba(43, 109, 246, 0.22);
+    --soft-shadow: rgba(0, 0, 0, 0.6);
+    --glass-border: rgba(255, 255, 255, 0.04);
+}
+
+* {
+    box-sizing: border-box
+}
+
+html,
+body {
+    height: 100%
+}
+
+body {
+    margin: 0;
+    font-family: Inter, ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+    background: radial-gradient(1200px 600px at 10% 10%, rgba(43, 109, 246, 0.08), transparent),
+        radial-gradient(900px 400px at 90% 90%, rgba(28, 78, 216, 0.06), transparent),
+        var(--bg-1);
+    color: #e6eef8;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 32px;
+}
+
+/* center card (responsive) */
+.card {
+    width: 100%;
+    max-width: 980px;
+    height: 86vh;
+    display: flex;
+    border-radius: 24px;
+    overflow: hidden;
+    background: linear-gradient(180deg, rgba(255, 255, 255, 0.02), rgba(255, 255, 255, 0.01));
+    box-shadow: 0 10px 30px var(--soft-shadow), inset 0 1px 0 rgba(255, 255, 255, 0.02);
+}
+
+/* Sidebar */
+.sidebar {
+    width: 320px;
+    background: linear-gradient(180deg, rgba(255, 255, 255, 0.012), rgba(255, 255, 255, 0.01));
+    border-right: 1px solid var(--glass-border);
+    padding: 18px;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    backdrop-filter: blur(8px);
+}
+
+/* top */
+.side-top {
+    display: flex;
+    align-items: center;
+    justify-content: space-between
+}
+
+.user {
+    display: flex;
+    gap: 12px;
+    align-items: center
+}
+
+.avatar {
+    width: 48px;
+    height: 48px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 2px solid rgba(255, 255, 255, 0.04);
+    box-shadow: 0 6px 18px rgba(2, 6, 23, 0.6)
+}
+
+.me .name {
+    font-weight: 600
+}
+
+.me .status {
+    font-size: 12px;
+    color: var(--muted)
+}
+
+/* new chat button (neumorphic) */
+.new-btn {
+    width: 38px;
+    height: 38px;
+    border-radius: 10px;
+    border: none;
+    background: linear-gradient(145deg, rgba(255, 255, 255, 0.02), rgba(255, 255, 255, 0.01));
+    color: var(--blue);
+    font-weight: 700;
+    box-shadow: 0 6px 14px rgba(2, 6, 23, 0.6), inset 0 1px 0 rgba(255, 255, 255, 0.02);
+    cursor: pointer;
+}
+
+/* search */
+.search-wrap input {
+    width: 100%;
+    padding: 10px 12px;
+    border-radius: 12px;
+    border: 1px solid var(--glass-border);
+    background: var(--glass);
+    color: var(--muted);
+    outline: none;
+    font-size: 14px;
+}
+
+/* contacts list */
+.contacts {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    overflow: auto;
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 8px
+}
+
+.contact {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 10px;
+    border-radius: 12px;
+    cursor: pointer;
+    transition: all .18s;
+    border: 1px solid transparent;
+}
+
+.contact img {
+    width: 44px;
+    height: 44px;
+    border-radius: 50%;
+    object-fit: cover
+}
+
+.contact .meta {
+    flex: 1;
+    min-width: 0
+}
+
+.cname {
+    font-weight: 600
+}
+
+.cmsg {
+    font-size: 13px;
+    color: var(--muted);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis
+}
+
+.time {
+    font-size: 12px;
+    color: var(--muted)
+}
+
+/* active */
+.contact.active {
+    background: linear-gradient(90deg, rgba(43, 109, 246, 0.08), rgba(28, 78, 216, 0.04));
+    border: 1px solid rgba(43, 109, 246, 0.12);
+    box-shadow: 0 6px 18px rgba(11, 24, 45, 0.6);
+}
+
+/* side footer */
+.side-bottom {
+    padding-top: 8px;
+    text-align: center;
+    color: var(--muted);
+    font-size: 12px
+}
+
+/* Chat panel */
+.chat {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    background: linear-gradient(180deg, rgba(255, 255, 255, 0.01), rgba(255, 255, 255, 0.00))
+}
+
+/* header */
+.chat-header {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 14px 18px;
+    border-bottom: 1px solid var(--glass-border);
+    background: transparent
+}
+
+.back-btn {
+    display: none;
+    background: transparent;
+    border: none;
+    color: var(--muted);
+    font-size: 20px;
+    cursor: pointer
+}
+
+.chat-profile {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    flex: 1
+}
+
+.chat-profile img {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%
+}
+
+.chat-profile #chatName {
+    font-weight: 600
+}
+
+.chat-profile .typing {
+    font-size: 13px;
+    color: var(--muted)
+}
+
+.header-actions button {
+    background: transparent;
+    border: none;
+    color: var(--muted);
+    font-size: 18px;
+    margin-left: 6px;
+    cursor: pointer
+}
+
+/* messages area */
+.messages {
+    flex: 1;
+    padding: 18px;
+    overflow: auto;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    background:
+        radial-gradient(800px 200px at 10% 10%, rgba(43, 109, 246, 0.02), transparent)
+}
+
+.day {
+    align-self: center;
+    font-size: 12px;
+    color: var(--muted);
+    padding: 6px 10px;
+    border-radius: 999px;
+    background: rgba(255, 255, 255, 0.02)
+}
+
+/* single message */
+.msg {
+    display: flex;
+    flex-direction: column;
+    max-width: 75%;
+    gap: 6px
+}
+
+.msg .bubble {
+    padding: 12px 14px;
+    border-radius: 16px;
+    font-size: 14px;
+    line-height: 1.3;
+    display: inline-block;
+    box-shadow: 0 6px 14px rgba(2, 6, 23, 0.6)
+}
+
+.msg .ts {
+    font-size: 11px;
+    color: var(--muted);
+    align-self: flex-end
+}
+
+/* received vs sent */
+.msg.received {
+    align-self: flex-start
+}
+
+.msg.received .bubble {
+    background: var(--bubble-recv);
+    color: #e6eef8;
+    border: 1px solid rgba(255, 255, 255, 0.02);
+    border-bottom-left-radius: 6px
+}
+
+.msg.sent {
+    align-self: flex-end;
+    text-align: right
+}
+
+.msg.sent .bubble {
+    background: var(--bubble-sent);
+    color: white;
+    border: 1px solid rgba(255, 255, 255, 0.02);
+    border-bottom-right-radius: 6px;
+    box-shadow: 0 8px 24px var(--accent-shadow);
+}
+
+/* composer */
+.composer {
+    display: flex;
+    gap: 10px;
+    padding: 14px;
+    border-top: 1px solid var(--glass-border);
+    align-items: center
+}
+
+.composer .plus {
+    width: 44px;
+    height: 44px;
+    border-radius: 12px;
+    background: rgba(255, 255, 255, 0.02);
+    border: none;
+    color: var(--blue);
+    font-size: 20px;
+    cursor: pointer
+}
+
+.composer input {
+    flex: 1;
+    padding: 12px 14px;
+    border-radius: 12px;
+    border: 1px solid var(--glass-border);
+    background: transparent;
+    color: #e6eef8;
+    outline: none
+}
+
+.composer #send {
+    width: 48px;
+    height: 44px;
+    border-radius: 12px;
+    border: none;
+    background: var(--blue);
+    color: white;
+    font-weight: 700;
+    cursor: pointer;
+    box-shadow: 0 8px 22px rgba(43, 109, 246, 0.22)
+}
+
+/* small screens adjustments */
+@media (max-width:800px) {
+    .card {
+        width: 420px;
+        height: 92vh;
+        border-radius: 28px
+    }
+
+    .sidebar {
+        position: fixed;
+        left: 12px;
+        top: 12px;
+        bottom: 12px;
+        width: 84%;
+        max-width: 360px;
+        transform: translateX(0);
+        z-index: 30;
+        box-shadow: 0 18px 50px rgba(2, 6, 23, 0.6)
+    }
+
+    .back-btn {
+        display: inline-block
+    }
+
+    .contact.collapse {
+        display: flex
+    }
+}
+
+/* hide sidebar on small unless active (we toggle via JS by adding `show-side`) */
+@media (max-width:640px) {
+    .sidebar {
+        transform: translateX(-120%);
+        transition: transform .25s ease;
+        pointer-events: none
+    }
+
+    .sidebar.show {
+        transform: translateX(0);
+        pointer-events: auto
+    }
+
+    .card {
+        width: 100%;
+        height: 100vh;
+        border-radius: 0
+    }
+
+    .back-btn {
+        display: inline-block
+    }
+}
